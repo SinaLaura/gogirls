@@ -2,7 +2,7 @@
 
 // YouTube intro video: paste the full YouTube link between the quotes.
 // Leave empty ("") to hide the video block.
-const INTRO_VIDEO = "";
+const INTRO_VIDEO = "https://www.youtube.com/watch?v=NJ9QIiWgLWw";
 
 const TEXTS = {
   en: {
@@ -48,7 +48,7 @@ const TEXTS = {
     step2Text: "A stone needs at least one free point next to it. Take away its last free point and it's captured and removed from the board.",
     step3Title: "Claim territory",
     step3Text: "Build walls to fence off areas of the board. At the end, whoever surrounds more space (plus captured stones) wins.",
-    videoTitle: "Watch: Go for absolute beginners",
+    videoTitle: "Watch: Learn Go in five minutes",
     videoLoad: "Play video",
     videoNote: "The video is loaded from YouTube when you click.",
   },
@@ -95,7 +95,7 @@ const TEXTS = {
     step2Text: "Ein Stein braucht mindestens einen freien Nachbarpunkt. Nimmst du ihm den letzten, ist er geschlagen und wird vom Brett genommen.",
     step3Title: "Gebiet abstecken",
     step3Text: "Baue Mauern und grenze Bereiche des Bretts ab. Am Ende gewinnt, wer mehr Gebiet umschlossen (plus Steine geschlagen) hat.",
-    videoTitle: "Video: Go für absolute Anfängerinnen",
+    videoTitle: "Video: Go in fünf Minuten lernen (auf Englisch)",
     videoLoad: "Video abspielen",
     videoNote: "Das Video wird erst beim Klick von YouTube geladen.",
   },
@@ -329,7 +329,7 @@ function setupVideo() {
   document.getElementById("video-load").addEventListener("click", () => {
     document.getElementById("video-frame").innerHTML =
       `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
-        title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        title="Learn The Game Of Go In FIVE MINUTES! (In Sente)" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
   });
 }
