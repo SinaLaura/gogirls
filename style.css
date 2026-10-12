@@ -328,6 +328,7 @@ main > section.dates { padding-top: 132px; }
 .date-list li:first-child { border-top: 0; }
 .list-date { font-weight: 800; color: var(--ink); min-width: 13em; }
 .list-details { flex: 1; color: var(--muted); }
+.list-links { display: flex; gap: 16px; flex-wrap: wrap; }
 .date-list a { font-weight: 800; color: var(--pink-strong); text-decoration: none; }
 .date-list a:hover { text-decoration: underline; }
 

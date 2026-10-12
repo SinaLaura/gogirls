@@ -23,7 +23,8 @@ const TEXTS = {
     pastLink: "On Meetup",
     nextUp: "Next up",
     meetupBtn: "Details & RSVP on Meetup",
-    calendarBtn: "Add to calendar",
+    calendarBtn: "Add to Google Calendar",
+    calendarShort: "+ Google Calendar",
     mapBtn: "Directions",
     aboutTitle: "What is Go Girls*?",
     aboutText: "Go Girls* is a monthly game night for women* who want to play Go (also known as Baduk or Weiqi), the ancient board game of black and white stones. Whether you've never placed a stone or play regularly: come by, play, chat and enjoy the evening with us.",
@@ -70,7 +71,8 @@ const TEXTS = {
     pastLink: "Auf Meetup",
     nextUp: "Als Nächstes",
     meetupBtn: "Details & Anmeldung auf Meetup",
-    calendarBtn: "In den Kalender",
+    calendarBtn: "Zu Google Kalender hinzufügen",
+    calendarShort: "+ Google Kalender",
     mapBtn: "Wegbeschreibung",
     aboutTitle: "Was ist Go Girls*?",
     aboutText: "Go Girls* ist ein monatlicher Spieleabend für Frauen*, die Go spielen möchten (auch bekannt als Baduk oder Weiqi) – das jahrtausendealte Brettspiel mit schwarzen und weißen Steinen. Egal ob du noch nie einen Stein gesetzt hast oder regelmäßig spielst: Komm vorbei, spiel mit, quatsch mit uns und genieß den Abend.",
@@ -180,29 +182,18 @@ function timeRange(ev) {
     (lang === "de" ? " Uhr" : "");
 }
 
-function calendarFile(ev) {
-  const stamp = (date) =>
-    date.getFullYear() +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    String(date.getDate()).padStart(2, "0") + "T" +
-    String(date.getHours()).padStart(2, "0") +
-    String(date.getMinutes()).padStart(2, "0") + "00";
-  const ics = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Go Girls//Heidelberg//EN",
-    "BEGIN:VEVENT",
-    `UID:gogirls-${ev.date}@sinalaura.github.io`,
-    `DTSTAMP:${stamp(new Date())}`,
-    `DTSTART;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.start))}`,
-    `DTEND;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.end))}`,
-    "SUMMARY:Go Girls* Game Night",
-    `LOCATION:${ev.place}\, ${ev.address.replace(/,/g, "\,")}`,
-    ...(ev.meetup ? [`URL:${ev.meetup}`, `DESCRIPTION:${ev.meetup}`] : []),
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\r\n");
-  return URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+// Link that opens Google Calendar with the event already filled in
+function googleCalendarUrl(ev) {
+  const stamp = (time) => ev.date.replace(/-/g, "") + "T" + time.replace(":", "") + "00";
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: "Go Girls* Game Night",
+    dates: `${stamp(ev.start)}/${stamp(ev.end)}`,
+    ctz: "Europe/Berlin",
+    location: `${ev.place}, ${ev.address}`,
+    details: ev.meetup || "",
+  });
+  return "https://calendar.google.com/calendar/render?" + params;
 }
 
 function renderEvents() {
@@ -242,7 +233,7 @@ function renderEvents() {
         <p class="event-meta">${next.place}, ${next.address}</p>
         <div class="event-actions">
           ${meetupButton}
-          <a class="btn btn-ghost" href="${calendarFile(next)}" download="go-girls-${next.date}.ics">${t.calendarBtn}</a>
+          <a class="btn btn-ghost" href="${googleCalendarUrl(next)}" target="_blank" rel="noopener">${t.calendarBtn}</a>
           <a class="btn btn-ghost" href="${mapUrl}" target="_blank" rel="noopener">${t.mapBtn}</a>
         </div>
       </div>
@@ -256,13 +247,14 @@ function renderDateList(id, events, details) {
   document.getElementById(`${id}-list`).innerHTML = events.map((ev) => {
     const date = new Intl.DateTimeFormat(LOCALES[lang], { weekday: "short", day: "numeric", month: "long", year: "numeric" })
       .format(toDate(ev.date));
-    const link = ev.meetup
-      ? `<a href="${ev.meetup}" target="_blank" rel="noopener">${t.pastLink} →</a>`
-      : "";
+    const links = [
+      ev.meetup && `<a href="${ev.meetup}" target="_blank" rel="noopener">${t.pastLink} →</a>`,
+      id === "preview" && `<a href="${googleCalendarUrl(ev)}" target="_blank" rel="noopener">${t.calendarShort}</a>`,
+    ].filter(Boolean).join("");
     return `<li>
         <span class="list-date">${date}</span>
         <span class="list-details">${details(ev)}</span>
-        ${link}
+        <span class="list-links">${links}</span>
       </li>`;
   }).join("");
 }
