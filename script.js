@@ -1,4 +1,9 @@
 // All texts in both languages. Event data lives in events.js.
+
+// YouTube intro video: paste the full YouTube link between the quotes.
+// Leave empty ("") to hide the video block.
+const INTRO_VIDEO = "";
+
 const TEXTS = {
   en: {
     navDates: "Dates",
@@ -21,7 +26,7 @@ const TEXTS = {
     newTitle: "New to Go?",
     newText: "Perfect! We'll explain the rules and play your first games with you.",
     whoTitle: "Who can come?",
-    whoText: "Women* of every age and level. You don't need to be a student.",
+    whoText: "Women* of every age and level.",
     langTitle: "Language",
     langText: "German and English – whatever suits you.",
     foodTitle: "Food & drinks",
@@ -29,6 +34,23 @@ const TEXTS = {
     asteriskNote: "* The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.",
     hosts: "Hosts: Sina & Maya",
     footerMeetup: "Next event on Meetup",
+    navGo: "What is Go?",
+    goTitle: "What is Go?",
+    goIntro: "Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.",
+    fact1Big: "2,500+",
+    fact1: "years old – it comes from China",
+    fact2: "small board for beginners (the big one is 19×19)",
+    fact3Big: "3 names",
+    fact3: "Weiqi in China, Baduk in Korea, Igo in Japan",
+    step1Title: "Place a stone",
+    step1Text: "Black and White take turns placing one stone on an empty point – on the lines, not in the squares. Once placed, stones don't move.",
+    step2Title: "Surround to capture",
+    step2Text: "A stone needs at least one free point next to it. Take away its last free point and it's captured and removed from the board.",
+    step3Title: "Claim territory",
+    step3Text: "Build walls to fence off areas of the board. At the end, whoever surrounds more space (plus captured stones) wins.",
+    videoTitle: "Watch: Go for absolute beginners",
+    videoLoad: "Play video",
+    videoNote: "The video is loaded from YouTube when you click.",
   },
   de: {
     navDates: "Termine",
@@ -51,7 +73,7 @@ const TEXTS = {
     newTitle: "Neu bei Go?",
     newText: "Super! Wir erklären dir die Regeln und spielen deine ersten Partien mit dir.",
     whoTitle: "Wer kann kommen?",
-    whoText: "Frauen* jeden Alters und jeder Spielstärke. Du musst keine Studentin sein.",
+    whoText: "Frauen* jeden Alters und jeder Spielstärke.",
     langTitle: "Sprache",
     langText: "Deutsch und Englisch – wie es dir lieber ist.",
     foodTitle: "Essen & Trinken",
@@ -59,6 +81,23 @@ const TEXTS = {
     asteriskNote: "* Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen.",
     hosts: "Gastgeberinnen: Sina & Maya",
     footerMeetup: "Nächster Termin auf Meetup",
+    navGo: "Was ist Go?",
+    goTitle: "Was ist Go?",
+    goIntro: "Go ist ein Strategie-Brettspiel für zwei Personen. Die Regeln passen auf einen Bierdeckel – und trotzdem ist das Spiel so tief, dass man ein Leben lang Neues entdeckt.",
+    fact1Big: "2.500+",
+    fact1: "Jahre alt – es stammt aus China",
+    fact2: "kleines Brett für Anfängerinnen (das große hat 19×19)",
+    fact3Big: "3 Namen",
+    fact3: "Weiqi in China, Baduk in Korea, Igo in Japan",
+    step1Title: "Stein setzen",
+    step1Text: "Schwarz und Weiß setzen abwechselnd einen Stein auf einen freien Punkt – auf die Linien, nicht in die Kästchen. Gesetzte Steine bewegen sich nicht mehr.",
+    step2Title: "Umzingeln & schlagen",
+    step2Text: "Ein Stein braucht mindestens einen freien Nachbarpunkt. Nimmst du ihm den letzten, ist er geschlagen und wird vom Brett genommen.",
+    step3Title: "Gebiet abstecken",
+    step3Text: "Baue Mauern und grenze Bereiche des Bretts ab. Am Ende gewinnt, wer mehr Gebiet umschlossen (plus Steine geschlagen) hat.",
+    videoTitle: "Video: Go für absolute Anfängerinnen",
+    videoLoad: "Video abspielen",
+    videoNote: "Das Video wird erst beim Klick von YouTube geladen.",
   },
 };
 
@@ -202,8 +241,103 @@ function renderPastEvents(past) {
   }).join("");
 }
 
+// ---- "What is Go?" diagrams ----
+
+// Draws a small Go board as SVG. Points are [column, row], counted from 0.
+// edge: true draws a complete board, false a cut-out of a bigger one.
+function drawBoard(el, { size, edge = false, black = [], white = [], ghost = [], ring = [],
+                         empty = [], blackArea = [], whiteArea = [] }) {
+  const gap = 24;
+  const margin = edge ? 16 : 12;
+  const width = margin * 2 + gap * (size - 1);
+  const p = (i) => margin + i * gap;
+  const lineStart = edge ? margin : 0;
+  const lineEnd = edge ? width - margin : width;
+  let svg = `<rect width="${width}" height="${width}" rx="8" fill="#e2b47a"/>`;
+
+  for (let i = 0; i < size; i++) {
+    svg += `<line x1="${lineStart}" y1="${p(i)}" x2="${lineEnd}" y2="${p(i)}"/>`;
+    svg += `<line x1="${p(i)}" y1="${lineStart}" x2="${p(i)}" y2="${lineEnd}"/>`;
+  }
+  blackArea.forEach(([x, y]) => {
+    svg += `<rect x="${p(x) - 4}" y="${p(y) - 4}" width="8" height="8" fill="#1c1416"/>`;
+  });
+  whiteArea.forEach(([x, y]) => {
+    svg += `<rect x="${p(x) - 4}" y="${p(y) - 4}" width="8" height="8" fill="#fbf8f3" stroke="#1c1416"/>`;
+  });
+  empty.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10" fill="none" stroke="#b85a1c" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+  });
+  black.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#1c1416"/>
+            <circle cx="${p(x) - 3.5}" cy="${p(y) - 3.5}" r="3" fill="#fff" stroke="none" opacity="0.22"/>`;
+  });
+  white.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#fbf8f3" stroke="#1c1416"/>`;
+  });
+  ghost.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#1c1416" opacity="0.3" stroke="#1c1416" stroke-dasharray="3 2"/>`;
+  });
+  ring.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="14.5" fill="none" stroke="#e0762f" stroke-width="2.5"/>`;
+  });
+
+  el.innerHTML = `<svg viewBox="0 0 ${width} ${width}" aria-hidden="true">
+    <g stroke="rgba(58,31,45,0.55)" stroke-width="1">${svg}</g></svg>`;
+}
+
+function drawDiagrams() {
+  drawBoard(document.getElementById("diagram-place"), {
+    size: 5,
+    black: [[1, 1], [3, 3], [2, 2]],
+    white: [[3, 1], [1, 3]],
+    ring: [[2, 2]],
+  });
+  drawBoard(document.getElementById("diagram-capture-before"), {
+    size: 5,
+    black: [[1, 2], [2, 1], [3, 2]],
+    white: [[2, 2]],
+    ghost: [[2, 3]],
+  });
+  drawBoard(document.getElementById("diagram-capture-after"), {
+    size: 5,
+    black: [[1, 2], [2, 1], [3, 2], [2, 3]],
+    empty: [[2, 2]],
+  });
+
+  // Territory: one wall per side, row by row (column of the black / white stone)
+  const blackWall = [2, 2, 3, 3, 3, 2, 2];
+  const whiteWall = [3, 3, 4, 4, 4, 3, 3];
+  const board = { size: 7, edge: true, black: [], white: [], blackArea: [], whiteArea: [] };
+  for (let y = 0; y < 7; y++) {
+    board.black.push([blackWall[y], y]);
+    board.white.push([whiteWall[y], y]);
+    for (let x = 0; x < blackWall[y]; x++) board.blackArea.push([x, y]);
+    for (let x = whiteWall[y] + 1; x < 7; x++) board.whiteArea.push([x, y]);
+  }
+  drawBoard(document.getElementById("diagram-territory"), board);
+}
+
+// ---- Intro video (only loads from YouTube after a click) ----
+
+function setupVideo() {
+  const match = INTRO_VIDEO.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+  const id = match ? match[1] : (/^[\w-]{11}$/.test(INTRO_VIDEO) ? INTRO_VIDEO : null);
+  if (!id) return;
+
+  document.getElementById("video-block").hidden = false;
+  document.getElementById("video-load").addEventListener("click", () => {
+    document.getElementById("video-frame").innerHTML =
+      `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
+        title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  });
+}
+
 // ---- Start ----
 
+drawDiagrams();
+setupVideo();
 document.querySelectorAll(".lang-switch button").forEach((btn) => {
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });

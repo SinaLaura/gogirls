@@ -13,12 +13,28 @@
   <meta property="og:url" content="https://sinalaura.github.io/gogirls/">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='12' cy='16' r='10' fill='%231c1416'/><circle cx='21' cy='16' r='10' fill='%23fff' stroke='%231c1416' stroke-width='2'/></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Progress Pride flag, reused below with <use href="#pride-flag"> -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="pride-flag" viewBox="0 0 60 36">
+      <rect y="0"  width="60" height="6" fill="#e40303"/>
+      <rect y="6"  width="60" height="6" fill="#ff8c00"/>
+      <rect y="12" width="60" height="6" fill="#ffed00"/>
+      <rect y="18" width="60" height="6" fill="#008026"/>
+      <rect y="24" width="60" height="6" fill="#24408e"/>
+      <rect y="30" width="60" height="6" fill="#732982"/>
+      <polygon points="0,0 16,0 31,18 16,36 0,36" fill="#000"/>
+      <polygon points="0,0 12,0 27,18 12,36 0,36" fill="#613915"/>
+      <polygon points="0,0 8,0 23,18 8,36 0,36" fill="#5bcefa"/>
+      <polygon points="0,0 4,0 19,18 4,36 0,36" fill="#f5a9b8"/>
+      <polygon points="0,0 15,18 0,36" fill="#fff"/>
+    </symbol>
+  </svg>
 
   <header class="topbar">
     <a href="#" class="logo" aria-label="Go Girls*">
@@ -28,6 +44,7 @@
     <nav>
       <a href="#dates" data-i18n="navDates">Dates</a>
       <a href="#about" data-i18n="navAbout">About</a>
+      <a href="#go" data-i18n="navGo">What is Go?</a>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="de">DE</button>
@@ -38,7 +55,10 @@
   <main>
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow" data-i18n="eyebrow">Heidelberg · once a month</p>
+        <p class="eyebrow">
+          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
+          <span data-i18n="eyebrow">Heidelberg · once a month</span>
+        </p>
         <h1>Go Girls*</h1>
         <p class="tagline" data-i18n="tagline">A cozy Go night for women* – play, chat and learn together.</p>
         <a href="#dates" class="btn btn-primary" data-i18n="heroCta">See the next dates</a>
@@ -53,6 +73,32 @@
     </section>
 
     <section id="dates" class="dates">
+      <!-- Decorative stones on the board. --x/--y = grid line counted from the centre / top -->
+      <div class="board-stones" aria-hidden="true">
+        <span class="stone stone-black" style="--x:1; --y:1"></span>
+        <span class="stone stone-white" style="--x:2; --y:1"></span>
+        <span class="stone stone-white" style="--x:3; --y:1"></span>
+        <span class="stone stone-black" style="--x:4; --y:1"></span>
+        <span class="stone stone-white" style="--x:2; --y:2"></span>
+        <span class="stone stone-black" style="--x:3; --y:2"></span>
+        <span class="stone stone-white" style="--x:5; --y:2"></span>
+        <span class="stone stone-white" style="--x:6; --y:2"></span>
+        <span class="stone stone-black" style="--x:7; --y:2"></span>
+        <span class="stone stone-black" style="--x:6; --y:3"></span>
+        <span class="stone stone-white" style="--x:7; --y:4"></span>
+        <span class="stone stone-black" style="--x:9; --y:4"></span>
+        <span class="stone stone-black" style="--x:-13; --y:6"></span>
+        <span class="stone stone-black" style="--x:-13; --y:7"></span>
+        <span class="stone stone-white" style="--x:-14; --y:7"></span>
+        <span class="stone stone-white" style="--x:-14; --y:9"></span>
+        <span class="stone stone-black" style="--x:-15; --y:9"></span>
+        <span class="stone stone-white" style="--x:13; --y:8"></span>
+        <span class="stone stone-black" style="--x:14; --y:8"></span>
+        <span class="stone stone-white" style="--x:14; --y:9"></span>
+        <span class="stone stone-black" style="--x:13; --y:10"></span>
+        <span class="stone stone-black" style="--x:15; --y:10"></span>
+      </div>
+
       <div class="container">
         <h2 data-i18n="datesTitle">Upcoming dates</h2>
         <p class="section-sub" data-i18n="datesSub">Not on Meetup? No problem – all dates are listed here too.</p>
@@ -79,7 +125,7 @@
           <div class="info-card">
             <span class="stone stone-white"></span>
             <h3 data-i18n="whoTitle">Who can come?</h3>
-            <p data-i18n="whoText">Women* of every age and level. You don't need to be a student.</p>
+            <p data-i18n="whoText">Women* of every age and level.</p>
           </div>
           <div class="info-card">
             <span class="stone stone-black"></span>
@@ -93,7 +139,65 @@
           </div>
         </div>
 
-        <p class="asterisk-note" data-i18n="asteriskNote">* The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.</p>
+        <p class="asterisk-note">
+          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
+          <span data-i18n="asteriskNote">* The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.</span>
+        </p>
+      </div>
+    </section>
+
+    <section id="go" class="go">
+      <div class="container">
+        <h2 data-i18n="goTitle">What is Go?</h2>
+        <p class="lead" data-i18n="goIntro">Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.</p>
+
+        <ul class="go-facts">
+          <li><strong data-i18n="fact1Big">2,500+</strong> <span data-i18n="fact1">years old – it comes from China</span></li>
+          <li><strong>9×9</strong> <span data-i18n="fact2">small board for beginners (the big one is 19×19)</span></li>
+          <li><strong data-i18n="fact3Big">3 names</strong> <span data-i18n="fact3">Weiqi in China, Baduk in Korea, Igo in Japan</span></li>
+        </ul>
+
+        <div class="go-steps">
+          <figure class="go-step">
+            <div class="go-diagram" id="diagram-place"></div>
+            <figcaption>
+              <span class="step-num">1</span>
+              <h3 data-i18n="step1Title">Place a stone</h3>
+              <p data-i18n="step1Text">Black and White take turns placing one stone on an empty point – on the lines, not in the squares. Once placed, stones don't move.</p>
+            </figcaption>
+          </figure>
+          <figure class="go-step">
+            <div class="go-diagram go-diagram-pair">
+              <div id="diagram-capture-before"></div>
+              <span class="go-arrow">→</span>
+              <div id="diagram-capture-after"></div>
+            </div>
+            <figcaption>
+              <span class="step-num">2</span>
+              <h3 data-i18n="step2Title">Surround to capture</h3>
+              <p data-i18n="step2Text">A stone needs at least one free point next to it. Take away its last free point and it's captured and removed from the board.</p>
+            </figcaption>
+          </figure>
+          <figure class="go-step">
+            <div class="go-diagram" id="diagram-territory"></div>
+            <figcaption>
+              <span class="step-num">3</span>
+              <h3 data-i18n="step3Title">Claim territory</h3>
+              <p data-i18n="step3Text">Build walls to fence off areas of the board. At the end, whoever surrounds more space (plus captured stones) wins.</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="video-block" id="video-block" hidden>
+          <h3 data-i18n="videoTitle">Watch: Go for absolute beginners</h3>
+          <div class="video-frame" id="video-frame">
+            <button type="button" class="video-load" id="video-load">
+              <span class="play-icon" aria-hidden="true"></span>
+              <span data-i18n="videoLoad">Play video</span>
+              <small data-i18n="videoNote">The video is loaded from YouTube when you click.</small>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -101,7 +205,10 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div>
-        <p class="footer-logo">Go Girls*</p>
+        <p class="footer-logo">
+          Go Girls*
+          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
+        </p>
         <p data-i18n="hosts">Hosts: Sina &amp; Maya</p>
       </div>
       <a class="btn btn-light" id="next-event-link" href="#" target="_blank" rel="noopener" data-i18n="footerMeetup" hidden>Next event on Meetup</a>
