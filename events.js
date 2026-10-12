@@ -22,7 +22,7 @@
 const EVENT_DEFAULTS = {
   start: "18:30",
   end: "21:30",
-  place: "ZEP – Uni-Wohnzimmer",
+  place: "ZEP",
   address: "Zeppelinstraße 1, Heidelberg",
 };
 

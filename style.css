@@ -509,7 +509,29 @@ main > section.dates { padding-top: 132px; }
   nav > a { display: none; }
 }
 
-/* Placeholder while an event has no Meetup link yet */
-.link-soon { font-size: 0.9rem; font-weight: 700; color: var(--muted); font-style: italic; }
-.btn-soon { background: var(--blush); color: var(--muted); font-style: italic; cursor: default; }
-.btn-soon:hover { transform: none; }
+/* ---------- Go Girls* Timer ad ---------- */
+.timer-ad {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  margin-top: 40px;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: 0 10px 24px rgba(120, 80, 160, 0.1);
+}
+.timer-ad img { flex-shrink: 0; border-radius: 24px; box-shadow: var(--shadow); }
+.timer-ad-eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pink-strong);
+}
+.timer-ad h3 { margin: 2px 0 6px; font-size: 1.5rem; }
+.timer-ad-body p:not(.timer-ad-eyebrow) { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
+.timer-ad-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 560px) {
+  .timer-ad { flex-direction: column; align-items: flex-start; padding: 22px; }
+}

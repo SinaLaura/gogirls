@@ -10,7 +10,7 @@ const TEXTS = {
     navAbout: "About",
     navLocation: "Location",
     locTitle: "Where we meet",
-    locText: "We meet in the cozy “Uni-Wohnzimmer” (university living room) at the ZEP – a relaxed place to sit together, play and chat.",
+    locText: "We meet at the ZEP – a cozy, relaxed place to sit together, play and chat.",
     locMap: "Open in Google Maps",
     eyebrow: "Heidelberg · every 2nd Tuesday of the month",
     tagline: "A cozy Go night for women* – play, chat and learn together.",
@@ -20,7 +20,6 @@ const TEXTS = {
     noEvents: "The next date will be announced here soon. Check back!",
     pastTitle: "Past events",
     previewTitle: "Further dates",
-    linkSoon: "Meetup link coming soon",
     pastLink: "On Meetup",
     nextUp: "Next up",
     meetupBtn: "Details & RSVP on Meetup",
@@ -30,8 +29,6 @@ const TEXTS = {
     aboutText: "Go Girls* is a monthly game night for women* who want to play Go (also known as Baduk or Weiqi), the ancient board game of black and white stones. Whether you've never placed a stone or play regularly: come by, play, chat and enjoy the evening with us.",
     newTitle: "New to Go?",
     newText: "Perfect! We'll explain the rules and play your first games with you.",
-    whoTitle: "Who can come?",
-    whoText: "Women* of every age and level.",
     langTitle: "Language",
     langText: "German and English – whatever suits you.",
     foodTitle: "Food & drinks",
@@ -50,13 +47,17 @@ const TEXTS = {
     videoTitle: "Watch: Learn Go in five minutes",
     videoLoad: "Play video",
     videoNote: "The video is loaded from YouTube when you click.",
+    timerEyebrow: "A Go Girls* app by Sina",
+    timerText: "A Go clock for your phone that lies next to the board. Fischer, byo-yomi or a simple timer, in English or German. Works right in the browser – or add it to your home screen as an app.",
+    timerOpen: "Open the timer",
+    timerGithub: "On GitHub",
   },
   de: {
     navDates: "Termine",
     navAbout: "Über uns",
     navLocation: "Ort",
     locTitle: "Wo wir uns treffen",
-    locText: "Wir treffen uns im gemütlichen Uni-Wohnzimmer der ZEP – ein entspannter Ort zum Zusammensitzen, Spielen und Quatschen.",
+    locText: "Wir treffen uns in der ZEP – ein gemütlicher, entspannter Ort zum Zusammensitzen, Spielen und Quatschen.",
     locMap: "In Google Maps öffnen",
     eyebrow: "Heidelberg · jeden 2. Dienstag im Monat",
     tagline: "Ein gemütlicher Go-Abend für Frauen* – zusammen spielen, quatschen und lernen.",
@@ -66,7 +67,6 @@ const TEXTS = {
     noEvents: "Der nächste Termin wird bald hier bekannt gegeben. Schau wieder vorbei!",
     pastTitle: "Vergangene Termine",
     previewTitle: "Weitere Termine",
-    linkSoon: "Meetup-Link folgt",
     pastLink: "Auf Meetup",
     nextUp: "Als Nächstes",
     meetupBtn: "Details & Anmeldung auf Meetup",
@@ -76,8 +76,6 @@ const TEXTS = {
     aboutText: "Go Girls* ist ein monatlicher Spieleabend für Frauen*, die Go spielen möchten (auch bekannt als Baduk oder Weiqi) – das jahrtausendealte Brettspiel mit schwarzen und weißen Steinen. Egal ob du noch nie einen Stein gesetzt hast oder regelmäßig spielst: Komm vorbei, spiel mit, quatsch mit uns und genieß den Abend.",
     newTitle: "Neu bei Go?",
     newText: "Super! Wir erklären dir die Regeln und spielen deine ersten Partien mit dir.",
-    whoTitle: "Wer kann kommen?",
-    whoText: "Frauen* jeden Alters und jeder Spielstärke.",
     langTitle: "Sprache",
     langText: "Deutsch und Englisch – wie es dir lieber ist.",
     foodTitle: "Essen & Trinken",
@@ -96,6 +94,10 @@ const TEXTS = {
     videoTitle: "Video: Go in fünf Minuten lernen (auf Englisch)",
     videoLoad: "Video abspielen",
     videoNote: "Das Video wird erst beim Klick von YouTube geladen.",
+    timerEyebrow: "Eine Go Girls*-App von Sina",
+    timerText: "Eine Go-Uhr fürs Handy, die neben dem Brett liegt. Fischer, Byo-yomi oder einfacher Timer, auf Deutsch oder Englisch. Läuft direkt im Browser – oder du legst sie als App auf deinen Startbildschirm.",
+    timerOpen: "Timer öffnen",
+    timerGithub: "Auf GitHub",
   },
 };
 
@@ -194,7 +196,7 @@ function calendarFile(ev) {
     `DTSTAMP:${stamp(new Date())}`,
     `DTSTART;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.start))}`,
     `DTEND;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.end))}`,
-    "SUMMARY:Go Girls* Night",
+    "SUMMARY:Go Girls* Game Night",
     `LOCATION:${ev.place}\, ${ev.address.replace(/,/g, "\,")}`,
     ...(ev.meetup ? [`URL:${ev.meetup}`, `DESCRIPTION:${ev.meetup}`] : []),
     "END:VEVENT",
@@ -223,7 +225,7 @@ function renderEvents() {
     encodeURIComponent(`${next.place}, ${next.address}`);
   const meetupButton = next.meetup
     ? `<a class="btn btn-primary" href="${next.meetup}" target="_blank" rel="noopener">${t.meetupBtn}</a>`
-    : `<span class="btn btn-soon">${t.linkSoon}</span>`;
+    : "";
 
   list.innerHTML = `
     <article class="event-card is-next">
@@ -234,7 +236,7 @@ function renderEvents() {
       </div>
       <div class="event-body">
         <span class="badge">${t.nextUp}</span>
-        <h3>Go Girls* Night</h3>
+        <h3>Go Girls* Game Night</h3>
         <p class="event-meta">${fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" })}
           · ${timeRange(next)}</p>
         <p class="event-meta">${next.place}, ${next.address}</p>
@@ -256,7 +258,7 @@ function renderDateList(id, events, details) {
       .format(toDate(ev.date));
     const link = ev.meetup
       ? `<a href="${ev.meetup}" target="_blank" rel="noopener">${t.pastLink} →</a>`
-      : `<span class="link-soon">${t.linkSoon}</span>`;
+      : "";
     return `<li>
         <span class="list-date">${date}</span>
         <span class="list-details">${details(ev)}</span>
