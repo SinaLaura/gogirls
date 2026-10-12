@@ -3,25 +3,32 @@
    GO GIRLS* EVENTS - this is the only file you need to edit
   ============================================================
 
-  To add a new event: copy one block from { to }, paste it
-  below the last one (don't forget the comma between blocks!)
-  and change the values.
+  We meet every 2nd Tuesday of the month. The website works out
+  these dates by itself and always shows the next few. You only
+  need to add the Meetup link once the event exists on Meetup:
 
-  - date:    "YYYY-MM-DD"  (e.g. "2026-11-10")
-  - start / end:  "HH:MM"  (24-hour clock)
-  - meetup:  the link to the event on Meetup
+    { date: "2026-11-10", meetup: "https://www.meetup.com/..." },
 
-  The order doesn't matter. The day after an event, it moves
-  to "Past events" automatically, so never delete anything.
+  (don't forget the comma at the end of each line!)
+
+  - Time and place come from EVENT_DEFAULTS below. If one evening
+    is different, add it to that event, e.g.  start: "19:00",
+  - To skip a month (e.g. holidays):
+    { date: "2026-12-08", cancelled: true },
+  - The day after an event, it moves to "Past events"
+    automatically, so never delete anything.
 */
 
+const EVENT_DEFAULTS = {
+  start: "18:30",
+  end: "21:30",
+  place: "ZEP – Uni-Wohnzimmer",
+  address: "Zeppelinstraße 1, Heidelberg",
+};
+
 const EVENTS = [
-  {
-    date: "2026-10-13",
-    start: "18:30",
-    end: "21:30",
-    place: "ZEP – Uni-Wohnzimmer",
-    address: "Zeppelinstraße 1, Heidelberg",
-    meetup: "https://www.meetup.com/heidelberg-events/events/316468466/",
-  },
+  { date: "2026-10-13", meetup: "https://www.meetup.com/heidelberg-events/events/316468466/" },
 ];
+
+// How many dates to preview below the next event
+const PREVIEW_COUNT = 3;

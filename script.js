@@ -9,17 +9,18 @@ const TEXTS = {
     navDates: "Dates",
     navAbout: "About",
     navLocation: "Location",
-    logoAlt: "Go Girls* logo: a cute black Go stone with a pink bow",
     locTitle: "Where we meet",
     locText: "We meet in the cozy “Uni-Wohnzimmer” (university living room) at the ZEP – a relaxed place to sit together, play and chat.",
     locMap: "Open in Google Maps",
-    eyebrow: "Heidelberg · once a month",
+    eyebrow: "Heidelberg · every 2nd Tuesday of the month",
     tagline: "A cozy Go night for women* – play, chat and learn together.",
     photoAlt: "Three women laughing on a sofa while playing Go on a wooden board",
     datesTitle: "Upcoming dates",
     datesSub: "Not on Meetup? No problem – all dates are listed here too.",
     noEvents: "The next date will be announced here soon. Check back!",
     pastTitle: "Past events",
+    previewTitle: "Further dates",
+    linkSoon: "Meetup link coming soon",
     pastLink: "On Meetup",
     nextUp: "Next up",
     meetupBtn: "Details & RSVP on Meetup",
@@ -37,7 +38,6 @@ const TEXTS = {
     foodText: "Drinks are €1.50 on site. Feel free to bring snacks.",
     asteriskNote: "The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.",
     hosts: "Hosts: Sina & Maya",
-    footerMeetup: "Next event on Meetup",
     navGo: "What is Go?",
     goTitle: "What is Go?",
     goIntro: "Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.",
@@ -55,17 +55,18 @@ const TEXTS = {
     navDates: "Termine",
     navAbout: "Über uns",
     navLocation: "Ort",
-    logoAlt: "Go Girls*-Logo: ein süßer schwarzer Go-Stein mit rosa Schleife",
     locTitle: "Wo wir uns treffen",
     locText: "Wir treffen uns im gemütlichen Uni-Wohnzimmer der ZEP – ein entspannter Ort zum Zusammensitzen, Spielen und Quatschen.",
     locMap: "In Google Maps öffnen",
-    eyebrow: "Heidelberg · einmal im Monat",
+    eyebrow: "Heidelberg · jeden 2. Dienstag im Monat",
     tagline: "Ein gemütlicher Go-Abend für Frauen* – zusammen spielen, quatschen und lernen.",
     photoAlt: "Drei Frauen sitzen lachend auf einem Sofa und spielen Go auf einem Holzbrett",
     datesTitle: "Kommende Termine",
     datesSub: "Nicht auf Meetup? Kein Problem – alle Termine findest du auch hier.",
     noEvents: "Der nächste Termin wird bald hier bekannt gegeben. Schau wieder vorbei!",
     pastTitle: "Vergangene Termine",
+    previewTitle: "Weitere Termine",
+    linkSoon: "Meetup-Link folgt",
     pastLink: "Auf Meetup",
     nextUp: "Als Nächstes",
     meetupBtn: "Details & Anmeldung auf Meetup",
@@ -83,7 +84,6 @@ const TEXTS = {
     foodText: "Getränke kosten vor Ort 1,50 €. Snacks kannst du gerne mitbringen.",
     asteriskNote: "Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen.",
     hosts: "Gastgeberinnen: Sina & Maya",
-    footerMeetup: "Nächster Termin auf Meetup",
     navGo: "Was ist Go?",
     goTitle: "Was ist Go?",
     goIntro: "Go ist ein Strategie-Brettspiel für zwei Personen. Die Regeln passen auf einen Bierdeckel – und trotzdem ist das Spiel so tief, dass man ein Leben lang Neues entdeckt.",
@@ -135,19 +135,47 @@ function toDate(dateStr, timeStr) {
   return new Date(y, m - 1, d, hh, mm);
 }
 
-// Events stay "upcoming" until the end of their day.
+function isoDate(d) {
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+}
+
+// Second Tuesday of a month (month may overflow, e.g. 13 = January next year)
+function secondTuesday(year, month) {
+  const first = new Date(year, month, 1);
+  const firstTuesday = 1 + ((2 - first.getDay() + 7) % 7);
+  return new Date(year, month, firstTuesday + 7);
+}
+
+// Combines the events from events.js with the regular schedule
+// (every 2nd Tuesday). Events stay "upcoming" until the end of their day.
 function splitEvents() {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
   const byDate = (a, b) => toDate(a.date, a.start) - toDate(b.date, b.start);
+
+  const listed = EVENTS.map((ev) => ({ ...EVENT_DEFAULTS, ...ev }));
+  const all = new Map(listed.map((ev) => [ev.date, ev]));
+  for (let i = 0; i <= PREVIEW_COUNT + 2; i++) {
+    const date = isoDate(secondTuesday(startOfToday.getFullYear(), startOfToday.getMonth() + i));
+    if (!all.has(date)) all.set(date, { ...EVENT_DEFAULTS, date });
+  }
+
+  const events = [...all.values()].filter((ev) => !ev.cancelled);
   return {
-    upcoming: EVENTS.filter((ev) => toDate(ev.date) >= startOfToday).sort(byDate),
-    past: EVENTS.filter((ev) => toDate(ev.date) < startOfToday).sort(byDate).reverse(),
+    upcoming: events.filter((ev) => toDate(ev.date) >= startOfToday).sort(byDate)
+      .slice(0, 1 + PREVIEW_COUNT),
+    past: events.filter((ev) => ev.meetup && toDate(ev.date) < startOfToday).sort(byDate).reverse(),
   };
 }
 
 function formatTime(date) {
   return new Intl.DateTimeFormat(LOCALES[lang], { hour: "numeric", minute: "2-digit" }).format(date);
+}
+
+function timeRange(ev) {
+  return `${formatTime(toDate(ev.date, ev.start))} – ${formatTime(toDate(ev.date, ev.end))}` +
+    (lang === "de" ? " Uhr" : "");
 }
 
 function calendarFile(ev) {
@@ -167,9 +195,8 @@ function calendarFile(ev) {
     `DTSTART;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.start))}`,
     `DTEND;TZID=Europe/Berlin:${stamp(toDate(ev.date, ev.end))}`,
     "SUMMARY:Go Girls* Night",
-    `LOCATION:${ev.place}\\, ${ev.address.replace(/,/g, "\\,")}`,
-    `URL:${ev.meetup}`,
-    `DESCRIPTION:${ev.meetup}`,
+    `LOCATION:${ev.place}\, ${ev.address.replace(/,/g, "\,")}`,
+    ...(ev.meetup ? [`URL:${ev.meetup}`, `DESCRIPTION:${ev.meetup}`] : []),
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
@@ -180,61 +207,60 @@ function renderEvents() {
   const list = document.getElementById("event-list");
   const t = TEXTS[lang];
   const { upcoming, past } = splitEvents();
-  list.innerHTML = "";
+  const [next, ...preview] = upcoming;
 
-  // Footer button always points to the next event (hidden if there is none)
-  const nextLink = document.getElementById("next-event-link");
-  nextLink.hidden = upcoming.length === 0;
-  if (upcoming.length) nextLink.href = upcoming[0].meetup;
+  renderDateList("preview", preview, (ev) => `${timeRange(ev)} · ${ev.place}`);
+  renderDateList("past", past, (ev) => ev.place);
 
-  renderPastEvents(past);
-
-  if (upcoming.length === 0) {
+  if (!next) {
     list.innerHTML = `<div class="event-empty"><p>${t.noEvents}</p></div>`;
     return;
   }
 
-  upcoming.forEach((ev, i) => {
-    const start = toDate(ev.date, ev.start);
-    const end = toDate(ev.date, ev.end);
-    const fmt = (opts) => new Intl.DateTimeFormat(LOCALES[lang], opts).format(start);
-    const mapUrl = "https://www.google.com/maps/search/?api=1&query=" +
-      encodeURIComponent(`${ev.place}, ${ev.address}`);
+  const start = toDate(next.date, next.start);
+  const fmt = (opts) => new Intl.DateTimeFormat(LOCALES[lang], opts).format(start);
+  const mapUrl = "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(`${next.place}, ${next.address}`);
+  const meetupButton = next.meetup
+    ? `<a class="btn btn-primary" href="${next.meetup}" target="_blank" rel="noopener">${t.meetupBtn}</a>`
+    : `<span class="btn btn-soon">${t.linkSoon}</span>`;
 
-    const card = document.createElement("article");
-    card.className = "event-card" + (i === 0 ? " is-next" : "");
-    card.innerHTML = `
+  list.innerHTML = `
+    <article class="event-card is-next">
       <div class="event-date">
         <span class="event-weekday">${fmt({ weekday: "short" })}</span>
         <span class="event-day">${start.getDate()}</span>
         <span class="event-month">${fmt({ month: "short" })}</span>
       </div>
       <div class="event-body">
-        ${i === 0 ? `<span class="badge">${t.nextUp}</span>` : ""}
+        <span class="badge">${t.nextUp}</span>
         <h3>Go Girls* Night</h3>
         <p class="event-meta">${fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-          · ${formatTime(start)} – ${formatTime(end)}${lang === "de" ? " Uhr" : ""}</p>
-        <p class="event-meta">${ev.place}, ${ev.address}</p>
+          · ${timeRange(next)}</p>
+        <p class="event-meta">${next.place}, ${next.address}</p>
         <div class="event-actions">
-          <a class="btn btn-primary" href="${ev.meetup}" target="_blank" rel="noopener">${t.meetupBtn}</a>
-          <a class="btn btn-ghost" href="${calendarFile(ev)}" download="go-girls-${ev.date}.ics">${t.calendarBtn}</a>
+          ${meetupButton}
+          <a class="btn btn-ghost" href="${calendarFile(next)}" download="go-girls-${next.date}.ics">${t.calendarBtn}</a>
           <a class="btn btn-ghost" href="${mapUrl}" target="_blank" rel="noopener">${t.mapBtn}</a>
         </div>
-      </div>`;
-    list.appendChild(card);
-  });
+      </div>
+    </article>`;
 }
 
-function renderPastEvents(past) {
+// Compact list of dates (preview or past), each with its Meetup link if there is one
+function renderDateList(id, events, details) {
   const t = TEXTS[lang];
-  document.getElementById("past-events").hidden = past.length === 0;
-  document.getElementById("past-list").innerHTML = past.map((ev) => {
-    const date = new Intl.DateTimeFormat(LOCALES[lang], { day: "numeric", month: "long", year: "numeric" })
+  document.getElementById(`${id}-events`).hidden = events.length === 0;
+  document.getElementById(`${id}-list`).innerHTML = events.map((ev) => {
+    const date = new Intl.DateTimeFormat(LOCALES[lang], { weekday: "short", day: "numeric", month: "long", year: "numeric" })
       .format(toDate(ev.date));
+    const link = ev.meetup
+      ? `<a href="${ev.meetup}" target="_blank" rel="noopener">${t.pastLink} →</a>`
+      : `<span class="link-soon">${t.linkSoon}</span>`;
     return `<li>
-        <span class="past-date">${date}</span>
-        <span class="past-place">${ev.place}</span>
-        <a href="${ev.meetup}" target="_blank" rel="noopener">${t.pastLink} →</a>
+        <span class="list-date">${date}</span>
+        <span class="list-details">${details(ev)}</span>
+        ${link}
       </li>`;
   }).join("");
 }
@@ -260,36 +286,22 @@ function drawBoard(el, { size, edge = false, black = [], white = [], ghost = [],
   }
   svg = `<g stroke="#eea3b7" stroke-width="1.3" stroke-linecap="round">${svg}</g>`;
 
-  // Territory is marked with little hearts
-  const heart = (x, y, fill, stroke = "none") =>
-    `<use href="#heart" x="${p(x) - 4.5}" y="${p(y) - 4}" width="9" height="8.25" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
-  blackArea.forEach(([x, y]) => { svg += heart(x, y, ink); });
-  whiteArea.forEach(([x, y]) => { svg += heart(x, y, "#fff", ink); });
+  // Territory is marked with small squares
+  const square = (x, y, fill, stroke = "none") =>
+    `<rect x="${p(x) - 4}" y="${p(y) - 4}" width="8" height="8" rx="1.5" fill="${fill}" stroke="${stroke}"/>`;
+  blackArea.forEach(([x, y]) => { svg += square(x, y, ink); });
+  whiteArea.forEach(([x, y]) => { svg += square(x, y, "#fff", ink); });
 
   empty.forEach(([x, y]) => {
     svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10" fill="none" stroke="#cc3d6e" stroke-width="1.5" stroke-dasharray="3 3"/>`;
   });
 
-  // A stone with a little face, like the Go Girls* logo
-  const face = (cx, cy, eye, mouth) => `
-    <circle cx="${cx - 3.6}" cy="${cy - 0.8}" r="1.7" fill="${eye}"/>
-    <circle cx="${cx + 3.6}" cy="${cy - 0.8}" r="1.7" fill="${eye}"/>
-    <circle cx="${cx - 3.1}" cy="${cy - 1.4}" r="0.6" fill="#fff"/>
-    <circle cx="${cx + 4.1}" cy="${cy - 1.4}" r="0.6" fill="#fff"/>
-    <ellipse cx="${cx - 6}" cy="${cy + 2.6}" rx="1.8" ry="1.1" fill="#f7a1b5"/>
-    <ellipse cx="${cx + 6}" cy="${cy + 2.6}" rx="1.8" ry="1.1" fill="#f7a1b5"/>
-    <path d="M${cx - 1.6} ${cy + 2.4} q1.6 1.6 3.2 0" fill="none" stroke="${mouth}" stroke-width="0.9" stroke-linecap="round"/>`;
-
   black.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y) + 1}" r="10.5" fill="#e58ba3" opacity="0.35"/>
-            <circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="${ink}"/>
-            <ellipse cx="${p(x) - 4}" cy="${p(y) - 6}" rx="3" ry="1.8" fill="#fff" opacity="0.25"/>
-            ${face(p(x), p(y), "#fff", "#f7c2d0")}`;
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="${ink}"/>
+            <ellipse cx="${p(x) - 3.5}" cy="${p(y) - 4.5}" rx="3.2" ry="2" fill="#fff" opacity="0.2"/>`;
   });
   white.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y) + 1}" r="10.5" fill="#e58ba3" opacity="0.35"/>
-            <circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#fffaf8" stroke="#e7b6c3" stroke-width="1"/>
-            ${face(p(x), p(y), ink, ink)}`;
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#fffaf8" stroke="#d9a9b7" stroke-width="1"/>`;
   });
   ghost.forEach(([x, y]) => {
     svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="${ink}" opacity="0.25" stroke="${ink}" stroke-dasharray="3 2"/>`;

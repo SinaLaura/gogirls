@@ -163,15 +163,8 @@ nav > a:hover { color: var(--pink-strong); }
     radial-gradient(35% 45% at 85% 60%, #ffe6dc, transparent 70%);
 }
 .hero-text { text-align: center; }
-.hero-logo {
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  border: 6px solid var(--white);
-  box-shadow: var(--shadow);
-}
 .eyebrow {
-  margin: 18px 0 4px;
+  margin: 0 0 4px;
   font-weight: 800;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
@@ -196,7 +189,7 @@ nav > a:hover { color: var(--pink-strong); }
   position: relative;
   margin: 0 auto;
   max-width: 620px;
-  padding: 12px 12px 44px;
+  padding: 12px 12px 34px;
   background: var(--white);
   border-radius: 18px;
   box-shadow: var(--shadow);
@@ -208,9 +201,6 @@ nav > a:hover { color: var(--pink-strong); }
   height: auto;
   border-radius: 10px;
 }
-.sticker { position: absolute; fill: var(--pink); }
-.sticker-1 { width: 54px; height: 50px; top: -20px; left: -16px; transform: rotate(-14deg); }
-.sticker-2 { width: 32px; height: 30px; bottom: 8px; right: 24px; fill: #f7b3c5; transform: rotate(12deg); }
 
 @media (min-width: 900px) {
   .hero {
@@ -319,15 +309,15 @@ main > section.dates { padding-top: 132px; }
 }
 .event-empty p { margin: 0; }
 
-.past-events {
-  margin-top: 32px;
+.date-box {
+  margin-top: 20px;
   background: rgba(255, 253, 251, 0.8);
   border-radius: var(--radius);
   padding: 22px;
 }
-.past-events h3 { margin: 0 0 10px; font-size: 1.3rem; }
-.past-list { list-style: none; margin: 0; padding: 0; }
-.past-list li {
+.date-box h3 { margin: 0 0 10px; font-size: 1.3rem; }
+.date-list { list-style: none; margin: 0; padding: 0; }
+.date-list li {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -335,11 +325,11 @@ main > section.dates { padding-top: 132px; }
   padding: 10px 0;
   border-top: 1.5px dashed var(--mat-line);
 }
-.past-list li:first-child { border-top: 0; }
-.past-date { font-weight: 800; color: var(--ink); min-width: 11em; }
-.past-place { flex: 1; color: var(--muted); }
-.past-list a { font-weight: 800; color: var(--pink-strong); text-decoration: none; }
-.past-list a:hover { text-decoration: underline; }
+.date-list li:first-child { border-top: 0; }
+.list-date { font-weight: 800; color: var(--ink); min-width: 13em; }
+.list-details { flex: 1; color: var(--muted); }
+.date-list a { font-weight: 800; color: var(--pink-strong); text-decoration: none; }
+.date-list a:hover { text-decoration: underline; }
 
 /* ---------- Location ---------- */
 .location { background: var(--peach); }
@@ -512,8 +502,14 @@ main > section.dates { padding-top: 132px; }
   .event-day { font-size: 1.4rem; }
   .event-actions .btn { flex: 1 1 100%; }
   .location-card { flex-direction: column; padding: 22px; }
+  .date-list li { flex-direction: column; align-items: flex-start; gap: 0; }
   nav > a { display: none; }
 }
 @media (max-width: 900px) {
   nav > a { display: none; }
 }
+
+/* Placeholder while an event has no Meetup link yet */
+.link-soon { font-size: 0.9rem; font-weight: 700; color: var(--muted); font-style: italic; }
+.btn-soon { background: var(--blush); color: var(--muted); font-style: italic; cursor: default; }
+.btn-soon:hover { transform: none; }

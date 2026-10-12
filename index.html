@@ -19,11 +19,8 @@
 </head>
 <body>
 
-  <!-- Reusable drawings: <use href="#heart"> / <use href="#pride-flag"> -->
+  <!-- Progress Pride flag, used with <use href="#pride-flag"> -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="heart" viewBox="0 0 24 22">
-      <path d="M12 21.5C5.5 16.6 0 12.4 0 6.9 0 3 3 0 6.7 0 9 0 11 1.2 12 3c1-1.8 3-3 5.3-3C21 0 24 3 24 6.9c0 5.5-5.5 9.7-12 14.6z"/>
-    </symbol>
     <symbol id="pride-flag" viewBox="0 0 60 36">
       <rect y="0"  width="60" height="6" fill="#e40303"/>
       <rect y="6"  width="60" height="6" fill="#ff8c00"/>
@@ -59,9 +56,7 @@
   <main>
     <section class="hero">
       <div class="hero-text">
-        <img class="hero-logo" src="images/logo-400.jpg" width="400" height="400"
-             alt="Go Girls* logo: a cute black Go stone with a pink bow" data-i18n-alt="logoAlt">
-        <p class="eyebrow" data-i18n="eyebrow">Heidelberg · once a month</p>
+        <p class="eyebrow" data-i18n="eyebrow">Heidelberg · every 2nd Tuesday of the month</p>
         <h1>Go Girls<span class="asterisk">*</span></h1>
         <p class="tagline" data-i18n="tagline">A cozy Go night for women* – play, chat and learn together.</p>
       </div>
@@ -71,8 +66,6 @@
              sizes="(min-width: 900px) 50vw, 100vw"
              width="1600" height="900"
              alt="Three women laughing on a sofa while playing Go on a wooden board" data-i18n-alt="photoAlt">
-        <svg class="sticker sticker-1" aria-hidden="true"><use href="#heart"/></svg>
-        <svg class="sticker sticker-2" aria-hidden="true"><use href="#heart"/></svg>
       </figure>
     </section>
 
@@ -108,9 +101,14 @@
         <p class="section-sub" data-i18n="datesSub">Not on Meetup? No problem – all dates are listed here too.</p>
         <div id="event-list" class="event-list"></div>
 
-        <div id="past-events" class="past-events" hidden>
+        <div id="preview-events" class="date-box" hidden>
+          <h3 data-i18n="previewTitle">Further dates</h3>
+          <ul id="preview-list" class="date-list"></ul>
+        </div>
+
+        <div id="past-events" class="date-box" hidden>
           <h3 data-i18n="pastTitle">Past events</h3>
-          <ul id="past-list" class="past-list"></ul>
+          <ul id="past-list" class="date-list"></ul>
         </div>
       </div>
     </section>
@@ -228,7 +226,6 @@
           <p data-i18n="hosts">Hosts: Sina &amp; Maya</p>
         </div>
       </div>
-      <a class="btn btn-light" id="next-event-link" href="#" target="_blank" rel="noopener" data-i18n="footerMeetup" hidden>Next event on Meetup</a>
     </div>
   </footer>
 
