@@ -355,7 +355,8 @@ main > section.dates { padding-top: 132px; }
 }
 .pin svg { width: 30px; height: 40px; fill: var(--pink-strong); }
 .location-body h3 { margin: 0; font-size: 1.45rem; }
-.address { margin: 2px 0 18px; font-weight: 800; color: var(--pink-strong); }
+.address { margin: 2px 0 10px; font-weight: 800; color: var(--pink-strong); }
+.location-body p:not(.address) { margin: 0 0 18px; color: var(--muted); }
 
 /* ---------- About ---------- */
 .about { background: var(--cream); }
@@ -522,8 +523,16 @@ main > section.dates { padding-top: 132px; }
 .timer-ad > img:first-child { flex-shrink: 0; border-radius: 24px; box-shadow: var(--shadow); }
 .timer-ad-body { flex: 1; }
 .ankabuti-logo { flex-shrink: 0; width: 180px; height: auto; border-radius: 20px; }
-.timer-ad h3 { margin: 0 0 6px; font-size: 1.5rem; }
-.timer-ad-body p { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
+.timer-ad-eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pink-strong);
+}
+.timer-ad h3 { margin: 2px 0 6px; font-size: 1.5rem; }
+.timer-ad-body p:not(.timer-ad-eyebrow) { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
 .timer-ad-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 @media (max-width: 560px) {
   .timer-ad { flex-direction: column; align-items: flex-start; padding: 22px; }
