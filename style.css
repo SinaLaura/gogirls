@@ -521,7 +521,9 @@ main > section.dates { padding-top: 132px; }
   padding: 28px;
   box-shadow: 0 10px 24px rgba(120, 80, 160, 0.1);
 }
-.timer-ad img { flex-shrink: 0; border-radius: 24px; box-shadow: var(--shadow); }
+.timer-ad > img:first-child { flex-shrink: 0; border-radius: 24px; box-shadow: var(--shadow); }
+.timer-ad-body { flex: 1; }
+.ankabuti-logo { flex-shrink: 0; width: 180px; height: auto; border-radius: 20px; }
 .timer-ad-eyebrow {
   margin: 0;
   font-size: 0.8rem;
@@ -535,4 +537,5 @@ main > section.dates { padding-top: 132px; }
 .timer-ad-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 @media (max-width: 560px) {
   .timer-ad { flex-direction: column; align-items: flex-start; padding: 22px; }
+  .ankabuti-logo { width: 130px; }
 }
