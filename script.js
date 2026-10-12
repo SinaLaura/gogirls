@@ -25,6 +25,10 @@ const TEXTS = {
     calendarBtn: "Add to Google Calendar",
     calendarShort: "+ Google Calendar",
     mapBtn: "Directions",
+    emailOrMeetup: "Not on Meetup? Just sign up by email:",
+    emailOnly: "Sign up by email:",
+    emailSubject: "Go Girls* Game Night – {date}",
+    emailBody: "Hi Sina,\n\nI'd like to come to the Go Girls* Game Night on {date}.\n\nSee you there!\n",
     aboutTitle: "What is Go Girls* Game Night?",
     newTitle: "New to Go?",
     newText: "Perfect! We'll explain the rules and play your first games with you.",
@@ -36,6 +40,7 @@ const TEXTS = {
     paceText: "Come late, leave early or take a break. There are quiet rooms for a calm game or a moment to yourself.",
     asteriskNote: "The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people. We aim to be a safer space for all of you.",
     hosts: "Hosts: Sina & Maya",
+    contact: "Contact:",
     navGo: "What is Go?",
     goTitle: "What is Go?",
     goIntro: "Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.",
@@ -73,6 +78,10 @@ const TEXTS = {
     calendarBtn: "Zu Google Kalender hinzufügen",
     calendarShort: "+ Google Kalender",
     mapBtn: "Wegbeschreibung",
+    emailOrMeetup: "Nicht auf Meetup? Melde dich einfach per E-Mail an:",
+    emailOnly: "Melde dich per E-Mail an:",
+    emailSubject: "Go Girls* Game Night – {date}",
+    emailBody: "Hallo Sina,\n\nich möchte gern zur Go Girls* Game Night am {date} kommen.\n\nBis dann!\n",
     aboutTitle: "Was ist die Go Girls* Game Night?",
     newTitle: "Neu bei Go?",
     newText: "Super! Wir erklären dir die Regeln und spielen deine ersten Partien mit dir.",
@@ -84,6 +93,7 @@ const TEXTS = {
     paceText: "Komm später, geh früher oder mach eine Pause. Es gibt ruhige Räume für eine Partie in Ruhe oder einen Moment für dich.",
     asteriskNote: "Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen. Wir möchten für euch alle ein Safer Space sein.",
     hosts: "Gastgeberinnen: Sina & Maya",
+    contact: "Kontakt:",
     navGo: "Was ist Go?",
     goTitle: "Was ist Go?",
     goIntro: "Go ist ein Strategie-Brettspiel für zwei Personen. Die Regeln passen auf einen Bierdeckel – und trotzdem ist das Spiel so tief, dass man ein Leben lang Neues entdeckt.",
@@ -129,6 +139,10 @@ function setLanguage(newLang) {
     btn.setAttribute("aria-pressed", btn.dataset.lang === lang);
   });
   renderEvents();
+
+  const contact = document.getElementById("contact-link");
+  contact.href = mailtoUrl("Go Girls*");
+  contact.textContent = EMAIL;
 }
 
 // ---- Events ----
@@ -180,6 +194,17 @@ function formatTime(date) {
 function timeRange(ev) {
   return `${formatTime(toDate(ev.date, ev.start))} – ${formatTime(toDate(ev.date, ev.end))}` +
     (lang === "de" ? " Uhr" : "");
+}
+
+// Put together here instead of written out, so spam bots reading the page can't pick it up
+const EMAIL = ["sinadenzel", "gmail.com"].join("@");
+
+// Email link with subject and a short message already filled in
+function mailtoUrl(subject, body) {
+  const query = [["subject", subject], ["body", body]]
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join("&");
+  return `mailto:${EMAIL}` + (query ? "?" + query : "");
 }
 
 // Link that opens Google Calendar with the event already filled in
@@ -240,7 +265,10 @@ function renderEvents() {
           ${mapButton}
         </div>
       </div>
-    </article>`;
+    </article>
+    <p class="email-signup">${next.meetup ? t.emailOrMeetup : t.emailOnly}
+      <a class="email-link" href="${mailtoUrl(t.emailSubject.replace("{date}", fmt({ day: "numeric", month: "long" })),
+        t.emailBody.replace("{date}", fmt({ weekday: "long", day: "numeric", month: "long" })))}">${EMAIL}</a></p>`;
 }
 
 // Time and place, but only where they differ from the usual ones
