@@ -356,7 +356,8 @@ main > section.dates { padding-top: 132px; }
 .pin svg { width: 30px; height: 40px; fill: var(--pink-strong); }
 .location-body h3 { margin: 0; font-size: 1.45rem; }
 .address { margin: 2px 0 10px; font-weight: 800; color: var(--pink-strong); }
-.location-body p:not(.address) { margin: 0 0 18px; color: var(--muted); }
+.location-body p:not(.address) { margin: 0 0 6px; color: var(--muted); }
+.location-body .btn { margin-top: 12px; }
 
 /* ---------- About ---------- */
 .about { background: var(--cream); }
