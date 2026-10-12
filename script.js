@@ -10,30 +10,28 @@ const TEXTS = {
     navAbout: "About",
     navLocation: "Location",
     locTitle: "Where we meet",
-    locText: "We meet at the ZEP – a cozy, relaxed place to sit together, play and chat.",
     locMap: "Open in Google Maps",
     eyebrow: "Heidelberg · every 2nd Tuesday of the month",
     tagline: "A cozy evening for women* – play Go, chat and learn together.",
     photoAlt: "Three women laughing on a sofa while playing Go on a wooden board",
     datesTitle: "Upcoming dates",
-    datesSub: "Not on Meetup? No problem – all dates are listed here too.",
     noEvents: "The next date will be announced here soon. Check back!",
     pastTitle: "Past events",
     previewTitle: "Further dates",
     pastLink: "On Meetup",
     nextUp: "Next up",
-    meetupBtn: "Details & RSVP on Meetup",
+    meetupBtn: "Sign up on Meetup",
     calendarBtn: "Add to Google Calendar",
     calendarShort: "+ Google Calendar",
     mapBtn: "Directions",
     aboutTitle: "What is Go Girls* Game Night?",
-    aboutText: "The Go Girls* Game Night is a monthly evening for women* who want to play Go (also known as Baduk or Weiqi), the ancient board game of black and white stones. Whether you've never placed a stone or play regularly: come by, play, chat and enjoy the evening with us.",
+    aboutText: "Once a month we meet to play Go – also known as Baduk or Weiqi – and spend a relaxed evening together.",
     newTitle: "New to Go?",
     newText: "Perfect! We'll explain the rules and play your first games with you.",
     langTitle: "Language",
-    langText: "German and English – whatever suits you.",
+    langText: "German & English",
     foodTitle: "Food & drinks",
-    foodText: "Drinks are €1.50 on site. Feel free to bring snacks.",
+    foodText: "Drinks €1.50 on site, snacks welcome.",
     asteriskNote: "The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.",
     hosts: "Hosts: Sina & Maya",
     navGo: "What is Go?",
@@ -48,8 +46,7 @@ const TEXTS = {
     videoTitle: "Watch: Learn Go in five minutes",
     videoLoad: "Play video",
     videoNote: "The video is loaded from YouTube when you click.",
-    timerEyebrow: "A Go Girls* app by Sina",
-    timerText: "A Go clock for your phone that lies next to the board. Fischer, byo-yomi or a simple timer, in English or German. Works right in the browser – or add it to your home screen as an app.",
+    timerText: "A Go clock for your phone – right in the browser, no install needed.",
     timerOpen: "Open the timer",
     timerGithub: "On GitHub",
   },
@@ -58,30 +55,28 @@ const TEXTS = {
     navAbout: "Über uns",
     navLocation: "Ort",
     locTitle: "Wo wir uns treffen",
-    locText: "Wir treffen uns in der ZEP – ein gemütlicher, entspannter Ort zum Zusammensitzen, Spielen und Quatschen.",
     locMap: "In Google Maps öffnen",
     eyebrow: "Heidelberg · jeden 2. Dienstag im Monat",
     tagline: "Ein gemütlicher Abend für Frauen* – Go spielen, quatschen und lernen.",
     photoAlt: "Drei Frauen sitzen lachend auf einem Sofa und spielen Go auf einem Holzbrett",
     datesTitle: "Kommende Termine",
-    datesSub: "Nicht auf Meetup? Kein Problem – alle Termine findest du auch hier.",
     noEvents: "Der nächste Termin wird bald hier bekannt gegeben. Schau wieder vorbei!",
     pastTitle: "Vergangene Termine",
     previewTitle: "Weitere Termine",
     pastLink: "Auf Meetup",
     nextUp: "Als Nächstes",
-    meetupBtn: "Details & Anmeldung auf Meetup",
+    meetupBtn: "Auf Meetup anmelden",
     calendarBtn: "Zu Google Kalender hinzufügen",
     calendarShort: "+ Google Kalender",
     mapBtn: "Wegbeschreibung",
     aboutTitle: "Was ist die Go Girls* Game Night?",
-    aboutText: "Die Go Girls* Game Night ist ein monatlicher Abend für Frauen*, die Go spielen möchten (auch bekannt als Baduk oder Weiqi) – das jahrtausendealte Brettspiel mit schwarzen und weißen Steinen. Egal ob du noch nie einen Stein gesetzt hast oder regelmäßig spielst: Komm vorbei, spiel mit, quatsch mit uns und genieß den Abend.",
+    aboutText: "Einmal im Monat treffen wir uns, um Go zu spielen – auch bekannt als Baduk oder Weiqi – und einen entspannten Abend zu verbringen.",
     newTitle: "Neu bei Go?",
     newText: "Super! Wir erklären dir die Regeln und spielen deine ersten Partien mit dir.",
     langTitle: "Sprache",
-    langText: "Deutsch und Englisch – wie es dir lieber ist.",
+    langText: "Deutsch & Englisch",
     foodTitle: "Essen & Trinken",
-    foodText: "Getränke kosten vor Ort 1,50 €. Snacks kannst du gerne mitbringen.",
+    foodText: "Getränke 1,50 € vor Ort, Snacks gern mitbringen.",
     asteriskNote: "Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen.",
     hosts: "Gastgeberinnen: Sina & Maya",
     navGo: "Was ist Go?",
@@ -96,8 +91,7 @@ const TEXTS = {
     videoTitle: "Video: Go in fünf Minuten lernen (auf Englisch)",
     videoLoad: "Video abspielen",
     videoNote: "Das Video wird erst beim Klick von YouTube geladen.",
-    timerEyebrow: "Eine Go Girls*-App von Sina",
-    timerText: "Eine Go-Uhr fürs Handy, die neben dem Brett liegt. Fischer, Byo-yomi oder einfacher Timer, auf Deutsch oder Englisch. Läuft direkt im Browser – oder du legst sie als App auf deinen Startbildschirm.",
+    timerText: "Eine Go-Uhr fürs Handy – direkt im Browser, ohne Installation.",
     timerOpen: "Timer öffnen",
     timerGithub: "Auf GitHub",
   },
@@ -202,8 +196,8 @@ function renderEvents() {
   const { upcoming, past } = splitEvents();
   const [next, ...preview] = upcoming;
 
-  renderDateList("preview", preview, (ev) => `${timeRange(ev)} · ${ev.place}`);
-  renderDateList("past", past, (ev) => ev.place);
+  renderDateList("preview", preview);
+  renderDateList("past", past);
 
   if (!next) {
     list.innerHTML = `<div class="event-empty"><p>${t.noEvents}</p></div>`;
@@ -212,10 +206,15 @@ function renderEvents() {
 
   const start = toDate(next.date, next.start);
   const fmt = (opts) => new Intl.DateTimeFormat(LOCALES[lang], opts).format(start);
-  const mapUrl = "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent(`${next.place}, ${next.address}`);
   const meetupButton = next.meetup
     ? `<a class="btn btn-primary" href="${next.meetup}" target="_blank" rel="noopener">${t.meetupBtn}</a>`
+    : "";
+  // The usual place is in the "Where we meet" section, so only spell out a different one
+  const elsewhere = next.address !== EVENT_DEFAULTS.address;
+  const mapUrl = "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(`${next.place}, ${next.address}`);
+  const mapButton = elsewhere
+    ? `<a class="btn btn-ghost" href="${mapUrl}" target="_blank" rel="noopener">${t.mapBtn}</a>`
     : "";
 
   list.innerHTML = `
@@ -227,21 +226,28 @@ function renderEvents() {
       </div>
       <div class="event-body">
         <span class="badge">${t.nextUp}</span>
-        <h3>Go Girls* Game Night</h3>
-        <p class="event-meta">${fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-          · ${timeRange(next)}</p>
-        <p class="event-meta">${next.place}, ${next.address}</p>
+        <h3>${timeRange(next)}</h3>
+        <p class="event-meta">${elsewhere ? `${next.place}, ${next.address}` : next.place}</p>
         <div class="event-actions">
           ${meetupButton}
           <a class="btn btn-ghost" href="${googleCalendarUrl(next)}" target="_blank" rel="noopener">${t.calendarBtn}</a>
-          <a class="btn btn-ghost" href="${mapUrl}" target="_blank" rel="noopener">${t.mapBtn}</a>
+          ${mapButton}
         </div>
       </div>
     </article>`;
 }
 
+// Time and place, but only where they differ from the usual ones
+function unusualDetails(ev) {
+  const d = EVENT_DEFAULTS;
+  return [
+    (ev.start !== d.start || ev.end !== d.end) && timeRange(ev),
+    ev.place !== d.place && ev.place,
+  ].filter(Boolean).join(" · ");
+}
+
 // Compact list of dates (preview or past), each with its Meetup link if there is one
-function renderDateList(id, events, details) {
+function renderDateList(id, events) {
   const t = TEXTS[lang];
   document.getElementById(`${id}-events`).hidden = events.length === 0;
   document.getElementById(`${id}-list`).innerHTML = events.map((ev) => {
@@ -253,7 +259,7 @@ function renderDateList(id, events, details) {
     ].filter(Boolean).join("");
     return `<li>
         <span class="list-date">${date}</span>
-        <span class="list-details">${details(ev)}</span>
+        <span class="list-details">${unusualDetails(ev)}</span>
         <span class="list-links">${links}</span>
       </li>`;
   }).join("");
