@@ -8,9 +8,13 @@ const TEXTS = {
   en: {
     navDates: "Dates",
     navAbout: "About",
+    navLocation: "Location",
+    logoAlt: "Go Girls* logo: a cute black Go stone with a pink bow",
+    locTitle: "Where we meet",
+    locText: "We meet in the cozy “Uni-Wohnzimmer” (university living room) at the ZEP – a relaxed place to sit together, play and chat.",
+    locMap: "Open in Google Maps",
     eyebrow: "Heidelberg · once a month",
     tagline: "A cozy Go night for women* – play, chat and learn together.",
-    heroCta: "See the next dates",
     photoAlt: "Three women laughing on a sofa while playing Go on a wooden board",
     datesTitle: "Upcoming dates",
     datesSub: "Not on Meetup? No problem – all dates are listed here too.",
@@ -31,17 +35,12 @@ const TEXTS = {
     langText: "German and English – whatever suits you.",
     foodTitle: "Food & drinks",
     foodText: "Drinks are €1.50 on site. Feel free to bring snacks.",
-    asteriskNote: "* The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.",
+    asteriskNote: "The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.",
     hosts: "Hosts: Sina & Maya",
     footerMeetup: "Next event on Meetup",
     navGo: "What is Go?",
     goTitle: "What is Go?",
     goIntro: "Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.",
-    fact1Big: "2,500+",
-    fact1: "years old – it comes from China",
-    fact2: "small board for beginners (the big one is 19×19)",
-    fact3Big: "3 names",
-    fact3: "Weiqi in China, Baduk in Korea, Igo in Japan",
     step1Title: "Place a stone",
     step1Text: "Black and White take turns placing one stone on an empty point – on the lines, not in the squares. Once placed, stones don't move.",
     step2Title: "Surround to capture",
@@ -55,9 +54,13 @@ const TEXTS = {
   de: {
     navDates: "Termine",
     navAbout: "Über uns",
+    navLocation: "Ort",
+    logoAlt: "Go Girls*-Logo: ein süßer schwarzer Go-Stein mit rosa Schleife",
+    locTitle: "Wo wir uns treffen",
+    locText: "Wir treffen uns im gemütlichen Uni-Wohnzimmer der ZEP – ein entspannter Ort zum Zusammensitzen, Spielen und Quatschen.",
+    locMap: "In Google Maps öffnen",
     eyebrow: "Heidelberg · einmal im Monat",
     tagline: "Ein gemütlicher Go-Abend für Frauen* – zusammen spielen, quatschen und lernen.",
-    heroCta: "Zu den nächsten Terminen",
     photoAlt: "Drei Frauen sitzen lachend auf einem Sofa und spielen Go auf einem Holzbrett",
     datesTitle: "Kommende Termine",
     datesSub: "Nicht auf Meetup? Kein Problem – alle Termine findest du auch hier.",
@@ -78,17 +81,12 @@ const TEXTS = {
     langText: "Deutsch und Englisch – wie es dir lieber ist.",
     foodTitle: "Essen & Trinken",
     foodText: "Getränke kosten vor Ort 1,50 €. Snacks kannst du gerne mitbringen.",
-    asteriskNote: "* Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen.",
+    asteriskNote: "Das Sternchen in Girls* schließt alle ein, die sich als Frau identifizieren – auch trans, inter und nicht-binäre Personen.",
     hosts: "Gastgeberinnen: Sina & Maya",
     footerMeetup: "Nächster Termin auf Meetup",
     navGo: "Was ist Go?",
     goTitle: "Was ist Go?",
     goIntro: "Go ist ein Strategie-Brettspiel für zwei Personen. Die Regeln passen auf einen Bierdeckel – und trotzdem ist das Spiel so tief, dass man ein Leben lang Neues entdeckt.",
-    fact1Big: "2.500+",
-    fact1: "Jahre alt – es stammt aus China",
-    fact2: "kleines Brett für Anfängerinnen (das große hat 19×19)",
-    fact3Big: "3 Namen",
-    fact3: "Weiqi in China, Baduk in Korea, Igo in Japan",
     step1Title: "Stein setzen",
     step1Text: "Schwarz und Weiß setzen abwechselnd einen Stein auf einen freien Punkt – auf die Linien, nicht in die Kästchen. Gesetzte Steine bewegen sich nicht mehr.",
     step2Title: "Umzingeln & schlagen",
@@ -253,37 +251,54 @@ function drawBoard(el, { size, edge = false, black = [], white = [], ghost = [],
   const p = (i) => margin + i * gap;
   const lineStart = edge ? margin : 0;
   const lineEnd = edge ? width - margin : width;
-  let svg = `<rect width="${width}" height="${width}" rx="8" fill="#e2b47a"/>`;
+  const ink = "#393643";
+  let svg = `<rect width="${width}" height="${width}" rx="14" fill="#ffd9e2"/>`;
 
   for (let i = 0; i < size; i++) {
     svg += `<line x1="${lineStart}" y1="${p(i)}" x2="${lineEnd}" y2="${p(i)}"/>`;
     svg += `<line x1="${p(i)}" y1="${lineStart}" x2="${p(i)}" y2="${lineEnd}"/>`;
   }
-  blackArea.forEach(([x, y]) => {
-    svg += `<rect x="${p(x) - 4}" y="${p(y) - 4}" width="8" height="8" fill="#1c1416"/>`;
-  });
-  whiteArea.forEach(([x, y]) => {
-    svg += `<rect x="${p(x) - 4}" y="${p(y) - 4}" width="8" height="8" fill="#fbf8f3" stroke="#1c1416"/>`;
-  });
+  svg = `<g stroke="#eea3b7" stroke-width="1.3" stroke-linecap="round">${svg}</g>`;
+
+  // Territory is marked with little hearts
+  const heart = (x, y, fill, stroke = "none") =>
+    `<use href="#heart" x="${p(x) - 4.5}" y="${p(y) - 4}" width="9" height="8.25" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+  blackArea.forEach(([x, y]) => { svg += heart(x, y, ink); });
+  whiteArea.forEach(([x, y]) => { svg += heart(x, y, "#fff", ink); });
+
   empty.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10" fill="none" stroke="#b85a1c" stroke-width="1.5" stroke-dasharray="3 3"/>`;
-  });
-  black.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#1c1416"/>
-            <circle cx="${p(x) - 3.5}" cy="${p(y) - 3.5}" r="3" fill="#fff" stroke="none" opacity="0.22"/>`;
-  });
-  white.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#fbf8f3" stroke="#1c1416"/>`;
-  });
-  ghost.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#1c1416" opacity="0.3" stroke="#1c1416" stroke-dasharray="3 2"/>`;
-  });
-  ring.forEach(([x, y]) => {
-    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="14.5" fill="none" stroke="#e0762f" stroke-width="2.5"/>`;
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10" fill="none" stroke="#cc3d6e" stroke-width="1.5" stroke-dasharray="3 3"/>`;
   });
 
-  el.innerHTML = `<svg viewBox="0 0 ${width} ${width}" aria-hidden="true">
-    <g stroke="rgba(58,31,45,0.55)" stroke-width="1">${svg}</g></svg>`;
+  // A stone with a little face, like the Go Girls* logo
+  const face = (cx, cy, eye, mouth) => `
+    <circle cx="${cx - 3.6}" cy="${cy - 0.8}" r="1.7" fill="${eye}"/>
+    <circle cx="${cx + 3.6}" cy="${cy - 0.8}" r="1.7" fill="${eye}"/>
+    <circle cx="${cx - 3.1}" cy="${cy - 1.4}" r="0.6" fill="#fff"/>
+    <circle cx="${cx + 4.1}" cy="${cy - 1.4}" r="0.6" fill="#fff"/>
+    <ellipse cx="${cx - 6}" cy="${cy + 2.6}" rx="1.8" ry="1.1" fill="#f7a1b5"/>
+    <ellipse cx="${cx + 6}" cy="${cy + 2.6}" rx="1.8" ry="1.1" fill="#f7a1b5"/>
+    <path d="M${cx - 1.6} ${cy + 2.4} q1.6 1.6 3.2 0" fill="none" stroke="${mouth}" stroke-width="0.9" stroke-linecap="round"/>`;
+
+  black.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y) + 1}" r="10.5" fill="#e58ba3" opacity="0.35"/>
+            <circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="${ink}"/>
+            <ellipse cx="${p(x) - 4}" cy="${p(y) - 6}" rx="3" ry="1.8" fill="#fff" opacity="0.25"/>
+            ${face(p(x), p(y), "#fff", "#f7c2d0")}`;
+  });
+  white.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y) + 1}" r="10.5" fill="#e58ba3" opacity="0.35"/>
+            <circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="#fffaf8" stroke="#e7b6c3" stroke-width="1"/>
+            ${face(p(x), p(y), ink, ink)}`;
+  });
+  ghost.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="10.5" fill="${ink}" opacity="0.25" stroke="${ink}" stroke-dasharray="3 2"/>`;
+  });
+  ring.forEach(([x, y]) => {
+    svg += `<circle cx="${p(x)}" cy="${p(y)}" r="14.5" fill="none" stroke="#cc3d6e" stroke-width="2.2" stroke-dasharray="4 3"/>`;
+  });
+
+  el.innerHTML = `<svg viewBox="0 0 ${width} ${width}" aria-hidden="true">${svg}</svg>`;
 }
 
 function drawDiagrams() {

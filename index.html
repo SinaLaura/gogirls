@@ -12,15 +12,18 @@
   <meta property="og:image" content="https://sinalaura.github.io/gogirls/images/gogirls-night-1600.jpg">
   <meta property="og:url" content="https://sinalaura.github.io/gogirls/">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='12' cy='16' r='10' fill='%231c1416'/><circle cx='21' cy='16' r='10' fill='%23fff' stroke='%231c1416' stroke-width='2'/></svg>">
-  <link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" type="image/png" href="images/logo-96.png">
+  <link rel="preload" href="fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Progress Pride flag, reused below with <use href="#pride-flag"> -->
+  <!-- Reusable drawings: <use href="#heart"> / <use href="#pride-flag"> -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="heart" viewBox="0 0 24 22">
+      <path d="M12 21.5C5.5 16.6 0 12.4 0 6.9 0 3 3 0 6.7 0 9 0 11 1.2 12 3c1-1.8 3-3 5.3-3C21 0 24 3 24 6.9c0 5.5-5.5 9.7-12 14.6z"/>
+    </symbol>
     <symbol id="pride-flag" viewBox="0 0 60 36">
       <rect y="0"  width="60" height="6" fill="#e40303"/>
       <rect y="6"  width="60" height="6" fill="#ff8c00"/>
@@ -37,12 +40,13 @@
   </svg>
 
   <header class="topbar">
-    <a href="#" class="logo" aria-label="Go Girls*">
-      <span class="stone stone-black"></span><span class="stone stone-white"></span>
+    <a href="#" class="logo">
+      <img src="images/logo-96.png" alt="" width="40" height="40">
       Go Girls*
     </a>
     <nav>
       <a href="#dates" data-i18n="navDates">Dates</a>
+      <a href="#location" data-i18n="navLocation">Location</a>
       <a href="#about" data-i18n="navAbout">About</a>
       <a href="#go" data-i18n="navGo">What is Go?</a>
       <div class="lang-switch" role="group" aria-label="Language">
@@ -55,25 +59,25 @@
   <main>
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow">
-          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
-          <span data-i18n="eyebrow">Heidelberg · once a month</span>
-        </p>
-        <h1>Go Girls*</h1>
+        <img class="hero-logo" src="images/logo-400.jpg" width="400" height="400"
+             alt="Go Girls* logo: a cute black Go stone with a pink bow" data-i18n-alt="logoAlt">
+        <p class="eyebrow" data-i18n="eyebrow">Heidelberg · once a month</p>
+        <h1>Go Girls<span class="asterisk">*</span></h1>
         <p class="tagline" data-i18n="tagline">A cozy Go night for women* – play, chat and learn together.</p>
-        <a href="#dates" class="btn btn-primary" data-i18n="heroCta">See the next dates</a>
       </div>
       <figure class="hero-photo">
         <img src="images/gogirls-night-1600.jpg"
              srcset="images/gogirls-night-800.jpg 800w, images/gogirls-night-1600.jpg 1600w"
-             sizes="(min-width: 900px) 55vw, 100vw"
+             sizes="(min-width: 900px) 50vw, 100vw"
              width="1600" height="900"
              alt="Three women laughing on a sofa while playing Go on a wooden board" data-i18n-alt="photoAlt">
+        <svg class="sticker sticker-1" aria-hidden="true"><use href="#heart"/></svg>
+        <svg class="sticker sticker-2" aria-hidden="true"><use href="#heart"/></svg>
       </figure>
     </section>
 
     <section id="dates" class="dates">
-      <!-- Decorative stones on the board. --x/--y = grid line counted from the centre / top -->
+      <!-- Decorative stones on the mat. --x/--y = grid line counted from the centre / top -->
       <div class="board-stones" aria-hidden="true">
         <span class="stone stone-black" style="--x:1; --y:1"></span>
         <span class="stone stone-white" style="--x:2; --y:1"></span>
@@ -111,28 +115,47 @@
       </div>
     </section>
 
+    <section id="location" class="location">
+      <div class="container">
+        <h2 data-i18n="locTitle">Where we meet</h2>
+        <div class="location-card">
+          <div class="pin" aria-hidden="true">
+            <svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.3 0 11.9 0 20.8 12 32 12 32s12-11.2 12-20.1C24 5.3 18.6 0 12 0z"/><circle cx="12" cy="12" r="4.5" fill="#fff"/></svg>
+          </div>
+          <div class="location-body">
+            <h3>ZEP – Uni-Wohnzimmer</h3>
+            <p class="address">Zeppelinstraße 1, Heidelberg</p>
+            <p data-i18n="locText">We meet in the cozy “Uni-Wohnzimmer” (university living room) at the ZEP – a relaxed place to sit together, play and chat.</p>
+            <a class="btn btn-primary" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&amp;query=ZEP%2C%20Zeppelinstra%C3%9Fe%201%2C%20Heidelberg"
+               data-i18n="locMap">Open in Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="about" class="about">
       <div class="container">
         <h2 data-i18n="aboutTitle">What is Go Girls*?</h2>
         <p class="lead" data-i18n="aboutText">Go Girls* is a monthly game night for women* who want to play Go (also known as Baduk or Weiqi), the ancient board game of black and white stones. Whether you've never placed a stone or play regularly: come by, play, chat and enjoy the evening with us.</p>
 
         <div class="info-grid">
-          <div class="info-card">
+          <div class="info-card tint-pink">
             <span class="stone stone-black"></span>
             <h3 data-i18n="newTitle">New to Go?</h3>
             <p data-i18n="newText">Perfect! We'll explain the rules and play your first games with you.</p>
           </div>
-          <div class="info-card">
+          <div class="info-card tint-peach">
             <span class="stone stone-white"></span>
             <h3 data-i18n="whoTitle">Who can come?</h3>
             <p data-i18n="whoText">Women* of every age and level.</p>
           </div>
-          <div class="info-card">
+          <div class="info-card tint-lilac">
             <span class="stone stone-black"></span>
             <h3 data-i18n="langTitle">Language</h3>
             <p data-i18n="langText">German and English – whatever suits you.</p>
           </div>
-          <div class="info-card">
+          <div class="info-card tint-mint">
             <span class="stone stone-white"></span>
             <h3 data-i18n="foodTitle">Food &amp; drinks</h3>
             <p data-i18n="foodText">Drinks are €1.50 on site. Feel free to bring snacks.</p>
@@ -141,7 +164,7 @@
 
         <p class="asterisk-note">
           <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
-          <span data-i18n="asteriskNote">* The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.</span>
+          <span data-i18n="asteriskNote">The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people.</span>
         </p>
       </div>
     </section>
@@ -150,12 +173,6 @@
       <div class="container">
         <h2 data-i18n="goTitle">What is Go?</h2>
         <p class="lead" data-i18n="goIntro">Go is a strategy board game for two players. The rules fit on a napkin, but the game is so deep that you can keep discovering new things for a lifetime.</p>
-
-        <ul class="go-facts">
-          <li><strong data-i18n="fact1Big">2,500+</strong> <span data-i18n="fact1">years old – it comes from China</span></li>
-          <li><strong>9×9</strong> <span data-i18n="fact2">small board for beginners (the big one is 19×19)</span></li>
-          <li><strong data-i18n="fact3Big">3 names</strong> <span data-i18n="fact3">Weiqi in China, Baduk in Korea, Igo in Japan</span></li>
-        </ul>
 
         <div class="go-steps">
           <figure class="go-step">
@@ -204,12 +221,12 @@
 
   <footer class="footer">
     <div class="container footer-inner">
-      <div>
-        <p class="footer-logo">
-          Go Girls*
-          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
-        </p>
-        <p data-i18n="hosts">Hosts: Sina &amp; Maya</p>
+      <div class="footer-brand">
+        <img src="images/logo-96.png" alt="" width="56" height="56">
+        <div>
+          <p class="footer-logo">Go Girls*</p>
+          <p data-i18n="hosts">Hosts: Sina &amp; Maya</p>
+        </div>
       </div>
       <a class="btn btn-light" id="next-event-link" href="#" target="_blank" rel="noopener" data-i18n="footerMeetup" hidden>Next event on Meetup</a>
     </div>
