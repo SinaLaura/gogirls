@@ -19,33 +19,12 @@
 </head>
 <body>
 
-  <!-- Progress Pride flag, used with <use href="#pride-flag"> -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="pride-flag" viewBox="0 0 60 36">
-      <rect y="0"  width="60" height="6" fill="#e40303"/>
-      <rect y="6"  width="60" height="6" fill="#ff8c00"/>
-      <rect y="12" width="60" height="6" fill="#ffed00"/>
-      <rect y="18" width="60" height="6" fill="#008026"/>
-      <rect y="24" width="60" height="6" fill="#24408e"/>
-      <rect y="30" width="60" height="6" fill="#732982"/>
-      <polygon points="0,0 16,0 31,18 16,36 0,36" fill="#000"/>
-      <polygon points="0,0 12,0 27,18 12,36 0,36" fill="#613915"/>
-      <polygon points="0,0 8,0 23,18 8,36 0,36" fill="#5bcefa"/>
-      <polygon points="0,0 4,0 19,18 4,36 0,36" fill="#f5a9b8"/>
-      <polygon points="0,0 15,18 0,36" fill="#fff"/>
-    </symbol>
-  </svg>
-
   <header class="topbar">
     <a href="#" class="logo">
       <img src="images/logo-96.png" alt="" width="40" height="40">
       Go Girls*
     </a>
     <nav>
-      <a href="#dates" data-i18n="navDates">Dates</a>
-      <a href="#location" data-i18n="navLocation">Location</a>
-      <a href="#about" data-i18n="navAbout">About</a>
-      <a href="#go" data-i18n="navGo">What is Go?</a>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="de">DE</button>
@@ -56,7 +35,7 @@
   <main>
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow" data-i18n="eyebrow">Heidelberg · every 2nd Tuesday of the month</p>
+        <p class="eyebrow"><span data-i18n="eyebrow">Every 2nd Tuesday of the month</span><span class="eyebrow-lang" data-i18n="eyebrowLang">Heidelberg · German &amp; English</span></p>
         <h1>Go Girls<span class="asterisk">*</span><br>Game Night</h1>
         <p class="tagline" data-i18n="tagline">A cozy evening for women* – play Go, chat and learn together.</p>
       </div>
@@ -133,35 +112,28 @@
 
     <section id="about" class="about">
       <div class="container">
-        <h2 data-i18n="aboutTitle">What is Go Girls* Game Night?</h2>
-
         <div class="info-grid">
           <div class="info-card tint-pink">
             <span class="stone stone-black"></span>
             <h3 data-i18n="newTitle">New to Go?</h3>
             <p data-i18n="newText">Perfect! We'll explain the rules and play your first games with you.</p>
           </div>
-          <div class="info-card tint-lilac">
-            <span class="stone stone-white"></span>
-            <h3 data-i18n="langTitle">Language</h3>
-            <p data-i18n="langText">German &amp; English</p>
-          </div>
           <div class="info-card tint-mint">
-            <span class="stone stone-black"></span>
+            <span class="stone stone-white"></span>
             <h3 data-i18n="foodTitle">Free to join</h3>
-            <p data-i18n="foodText">Bring your own food and drinks, or get drinks on site for €1.50. If we bring snacks, a small donation (€1–2) is appreciated.</p>
+            <p data-i18n="foodText">Bring your own food and drinks, or get drinks on site for €1.50. If we bring snacks, a small donation (€1⁠–⁠2) is appreciated.</p>
           </div>
           <div class="info-card tint-peach">
-            <span class="stone stone-white"></span>
+            <span class="stone stone-black"></span>
             <h3 data-i18n="paceTitle">At your own pace</h3>
             <p data-i18n="paceText">Come late, leave early or take a break. There are quiet rooms for a calm game or a moment to yourself.</p>
           </div>
+          <div class="info-card tint-lilac">
+            <span class="stone stone-pride" role="img" aria-label="Rainbow pride flag"></span>
+            <h3 data-i18n="welcomeTitle">Just among us</h3>
+            <p data-i18n="welcomeText">Cis, trans and inter women and non-binary people are welcome. We aim to be a safer space.</p>
+          </div>
         </div>
-
-        <p class="asterisk-note">
-          <svg class="pride-flag" role="img" aria-label="Progress Pride flag"><use href="#pride-flag"/></svg>
-          <span data-i18n="asteriskNote">The asterisk in Girls* includes everyone who identifies as a woman, including trans, inter and non-binary people. We aim to be a safer space for all of you.</span>
-        </p>
       </div>
     </section>
 
