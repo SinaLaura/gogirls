@@ -185,7 +185,7 @@ function timeRange(ev) {
 }
 
 // Put together here instead of written out, so spam bots reading the page can't pick it up
-const EMAIL = ["sinadenzel", "gmail.com"].join("@");
+const EMAIL = ["go.girls.game.night", "gmail.com"].join("@");
 
 // Email link with subject and a short message already filled in
 function mailtoUrl(subject, body) {
