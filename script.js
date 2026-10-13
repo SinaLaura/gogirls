@@ -10,7 +10,7 @@ const TEXTS = {
     locText: "We meet at the ZEP, a public building of the university full of comfy sofas.",
     locMap: "Open in Google Maps",
     eyebrow: "Every 2nd Tuesday of the month",
-    eyebrowLang: "Heidelberg · German & English",
+    eyebrowLang: "German & English",
     tagline: "A cozy evening for women* – play Go, chat and learn together.",
     photoAlt: "Three women laughing on a sofa while playing Go on a wooden board",
     datesTitle: "Upcoming dates",
@@ -23,7 +23,7 @@ const TEXTS = {
     calendarBtn: "Add to Google Calendar",
     calendarShort: "+ Google Calendar",
     mapBtn: "Directions",
-    emailOrMeetup: "Not on Meetup? Just sign up by email:",
+    emailOrMeetup: "Not on Meetup? Sign up by email:",
     emailOnly: "Sign up by email:",
     emailSubject: "Go Girls* Game Night – {date}",
     emailBody: "Hi Sina,\n\nI'd like to come to the Go Girls* Game Night on {date}.\n\nSee you there!\n",
@@ -58,7 +58,7 @@ const TEXTS = {
     locText: "Wir treffen uns in der ZEP, einem öffentlichen Gebäude der Universität voller gemütlicher Sofas.",
     locMap: "In Google Maps öffnen",
     eyebrow: "Jeden 2. Dienstag im Monat",
-    eyebrowLang: "Heidelberg · Deutsch & Englisch",
+    eyebrowLang: "Deutsch & Englisch",
     tagline: "Ein gemütlicher Abend für Frauen* – Go spielen, quatschen und lernen.",
     photoAlt: "Drei Frauen sitzen lachend auf einem Sofa und spielen Go auf einem Holzbrett",
     datesTitle: "Kommende Termine",
@@ -71,7 +71,7 @@ const TEXTS = {
     calendarBtn: "Zu Google Kalender hinzufügen",
     calendarShort: "+ Google Kalender",
     mapBtn: "Wegbeschreibung",
-    emailOrMeetup: "Nicht auf Meetup? Melde dich einfach per E-Mail an:",
+    emailOrMeetup: "Nicht auf Meetup? Melde dich per E-Mail an:",
     emailOnly: "Melde dich per E-Mail an:",
     emailSubject: "Go Girls* Game Night – {date}",
     emailBody: "Hallo Sina,\n\nich möchte gern zur Go Girls* Game Night am {date} kommen.\n\nBis dann!\n",
@@ -248,7 +248,7 @@ function renderEvents() {
       <div class="event-body">
         <span class="badge">${t.nextUp}</span>
         <h3>${timeRange(next)}</h3>
-        <p class="event-meta">${elsewhere ? `${next.place}, ${next.address}` : next.place}</p>
+        <p class="event-meta">${elsewhere ? `${next.place}, ${next.address}` : `${next.place}, Heidelberg`}</p>
         <div class="event-actions">
           ${meetupButton}
           <a class="btn btn-ghost" href="${googleCalendarUrl(next)}" target="_blank" rel="noopener">${t.calendarBtn}</a>
