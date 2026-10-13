@@ -89,11 +89,19 @@ main > section h2 {
 }
 
 /* ---------- Pride flag ---------- */
-.pride-flag {
-  width: 35px;
-  height: 21px;
-  flex-shrink: 0;
-  border-radius: 4px;
+/* Go stone with the rainbow pride flag */
+.stone-pride {
+  position: relative;
+  background: linear-gradient(#e40303 0 16.67%, #ff8c00 0 33.33%, #ffed00 0 50%,
+                              #008026 0 66.67%, #24408e 0 83.33%, #732982 0);
+}
+.stone-pride::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.55), transparent 45%);
+  box-shadow: inset 0 -3px 5px rgba(57, 54, 67, 0.25);
 }
 
 /* ---------- Top bar ---------- */
@@ -119,8 +127,6 @@ main > section h2 {
 .logo img { border-radius: 50%; }
 
 nav { display: flex; align-items: center; gap: 20px; }
-nav > a { text-decoration: none; font-weight: 700; color: var(--muted); }
-nav > a:hover { color: var(--pink-strong); }
 
 .lang-switch {
   display: flex;
@@ -171,6 +177,10 @@ nav > a:hover { color: var(--pink-strong); }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--pink-strong);
+}
+.eyebrow-lang { display: block; }
+@media (max-width: 359px) {
+  .eyebrow { font-size: 0.78rem; letter-spacing: 0.04em; }
 }
 .hero h1 {
   margin: 0;
@@ -373,30 +383,22 @@ main > section.dates { padding-top: 132px; }
 
 /* ---------- About ---------- */
 .about { background: var(--cream); }
+main > section.about { padding-top: 72px; }
 
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
-  margin-top: 32px;
 }
 .info-card { border-radius: var(--radius); padding: 24px; }
 .tint-pink { background: var(--blush); }
 .tint-peach { background: var(--peach); }
 .tint-lilac { background: var(--lilac); }
 .tint-mint { background: var(--mint); }
-.info-card .stone { font-size: 1.7rem; box-shadow: 0 4px 8px rgba(57, 54, 67, 0.15); }
+.info-card .stone { display: block; font-size: 1.7rem; box-shadow: 0 4px 8px rgba(57, 54, 67, 0.15); }
 .info-card h3 { margin: 12px 0 6px; font-size: 1.25rem; }
 .info-card p { margin: 0; color: var(--muted); }
 
-.asterisk-note {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 28px;
-  font-size: 0.95rem;
-  color: var(--muted);
-}
 
 /* ---------- What is Go? ---------- */
 .go { background: var(--lilac); }
@@ -516,10 +518,6 @@ main > section.dates { padding-top: 132px; }
   .event-actions .btn { flex: 1 1 100%; }
   .location-card { flex-direction: column; padding: 22px; }
   .date-list li { flex-direction: column; align-items: flex-start; gap: 0; }
-  nav > a { display: none; }
-}
-@media (max-width: 900px) {
-  nav > a { display: none; }
 }
 
 /* ---------- Go Girls* Timer ad ---------- */
