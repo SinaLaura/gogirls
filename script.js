@@ -86,7 +86,7 @@ const TEXTS = {
     contact: "Kontakt:",
     goTitle: "Was ist Go?",
     goIntro: "Go ist ein Strategie-Brettspiel für zwei Personen. Die Regeln passen auf einen Bierdeckel – und trotzdem ist das Spiel so tief, dass man ein Leben lang Neues entdeckt.",
-    step1Title: "Stein setzen",
+    step1Title: "Steine setzen",
     step1Text: "Schwarz und Weiß setzen abwechselnd einen Stein auf einen freien Punkt – auf die Linien, nicht in die Kästchen. Gesetzte Steine bewegen sich nicht mehr.",
     step2Title: "Umzingeln & schlagen",
     step2Text: "Ein Stein braucht mindestens einen freien Nachbarpunkt. Nimmst du ihm den letzten, ist er geschlagen und wird vom Brett genommen.",
@@ -97,7 +97,7 @@ const TEXTS = {
     timerEyebrow: "btw, ich habe eine App gebaut",
     timerText: "Eine Go-Uhr fürs Handy, die neben dem Brett liegt – direkt im Browser, ohne Installation.",
     timerOpen: "Timer öffnen",
-    timerGithub: "Auf GitHub",
+    timerGithub: "Zu GitHub",
   },
 };
 
