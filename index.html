@@ -95,6 +95,7 @@
     <section id="location" class="location">
       <div class="container">
         <h2 data-i18n="locTitle">Where we meet</h2>
+        <div class="location-grid">
         <div class="location-card">
           <div class="pin" aria-hidden="true">
             <svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.3 0 11.9 0 20.8 12 32 12 32s12-11.2 12-20.1C24 5.3 18.6 0 12 0z"/><circle cx="12" cy="12" r="4.5" fill="#fff"/></svg>
@@ -107,6 +108,11 @@
                href="https://www.google.com/maps/search/?api=1&amp;query=ZEP%2C%20Zeppelinstra%C3%9Fe%201%2C%20Heidelberg"
                data-i18n="locMap">Open in Google Maps</a>
           </div>
+        </div>
+        <div class="map-preview">
+          <iframe title="Map: ZEP, Zeppelinstraße 1, Heidelberg" loading="lazy" referrerpolicy="no-referrer"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=8.6823%2C49.4194%2C8.6894%2C49.4228&amp;layer=mapnik&amp;marker=49.4210995%2C8.6858608"></iframe>
+        </div>
         </div>
       </div>
     </section>
@@ -178,6 +184,7 @@
           <h3 data-i18n="videoTitle">Watch: Learn Go in five minutes</h3>
           <div class="video-frame" id="video-frame">
             <button type="button" class="video-load" id="video-load">
+              <img class="video-thumb" src="images/video-thumb.jpg" alt="" width="1280" height="720">
               <span class="play-icon" aria-hidden="true"></span>
               <span data-i18n="videoLoad">Play video</span>
             </button>
