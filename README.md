@@ -8,6 +8,8 @@ Website for the Go Girls* Game Night, a cozy monthly Go night for women* in Heid
 
 We meet every 2nd Tuesday of the month, and the page works out those dates by itself. To link an evening to Meetup, skip a month or change the time, edit [`events.js`](events.js). The instructions are at the top of that file.
 
+Meetup links are added automatically: every morning a GitHub Action looks for new events with "Go Girls" in the title in the Heidelberg Events Meetup group and adds them to `events.js`. You can also start it by hand under **Actions → Update events → Run workflow**.
+
 ## Running it locally
 
 It's a plain HTML/CSS/JS page with no build step. Just open `index.html` in a browser.

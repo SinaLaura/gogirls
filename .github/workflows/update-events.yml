@@ -1,0 +1,31 @@
+# Every morning, look for new Go Girls* events on Meetup and add their links to events.js.
+# You can also start it by hand on GitHub: Actions -> Update events -> Run workflow
+name: Update events
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # every day at 6:00 UTC (8:00 in Heidelberg in summer)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Look for new events on Meetup
+        run: python3 .github/scripts/update_events.py
+
+      - name: Save new links
+        run: |
+          if git diff --quiet; then
+            echo "Nothing to save"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Add new Go Girls* Game Night Meetup link"
+          git push

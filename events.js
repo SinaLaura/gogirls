@@ -11,6 +11,10 @@
 
   (don't forget the comma at the end of each line!)
 
+  Usually you don't even need to do that: every morning GitHub
+  looks for new "Go Girls" events on Meetup and adds the link
+  here by itself (see .github/workflows/update-events.yml).
+
   - Time and place come from EVENT_DEFAULTS below. If one evening
     is different, add it to that event, e.g.  start: "19:00",
   - To skip a month (e.g. holidays):
