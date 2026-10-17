@@ -31,6 +31,7 @@ const EVENT_DEFAULTS = {
 };
 
 const EVENTS = [
+  { date: "2026-09-02", start: "19:00", end: "22:00", meetup: "https://www.meetup.com/heidelberg-events/events/316278720/" },
   { date: "2026-10-13", meetup: "https://www.meetup.com/heidelberg-events/events/316468466/" },
   { date: "2026-11-10", meetup: "https://www.meetup.com/heidelberg-events/events/316965368/" },
 ];
