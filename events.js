@@ -32,6 +32,7 @@ const EVENT_DEFAULTS = {
 
 const EVENTS = [
   { date: "2026-10-13", meetup: "https://www.meetup.com/heidelberg-events/events/316468466/" },
+  { date: "2026-11-10", meetup: "https://www.meetup.com/heidelberg-events/events/316965368/" },
 ];
 
 // How many dates to preview below the next event
