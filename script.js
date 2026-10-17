@@ -281,7 +281,7 @@ function renderDateList(id, events) {
     ].filter(Boolean).join("");
     return `<li>
         <span class="list-date">${date}</span>
-        <span class="list-details">${unusualDetails(ev)}</span>
+        <span class="list-details">${id === "past" ? "" : unusualDetails(ev)}</span>
         <span class="list-links">${links}</span>
       </li>`;
   }).join("");
