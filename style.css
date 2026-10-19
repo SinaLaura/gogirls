@@ -551,7 +551,7 @@ main > section.about { padding-top: 72px; }
 }
 .timer-ad > img:first-child { flex-shrink: 0; border-radius: 24px; box-shadow: var(--shadow); }
 .timer-ad-body { flex: 1; }
-.timer-logo { flex-shrink: 0; width: 180px; height: auto; border-radius: 20px; }
+.ankabuti-logo { flex-shrink: 0; width: 180px; height: auto; border-radius: 20px; }
 .timer-ad-eyebrow {
   margin: 0;
   font-size: 0.8rem;
@@ -565,7 +565,7 @@ main > section.about { padding-top: 72px; }
 .timer-ad-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 @media (max-width: 560px) {
   .timer-ad { flex-direction: column; align-items: flex-start; padding: 22px; }
-  .timer-logo { width: 130px; }
+  .ankabuti-logo { width: 130px; }
 }
 
 /* Video preview: the real thumbnail (stored on this site) with a play button */
