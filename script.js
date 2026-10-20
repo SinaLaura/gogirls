@@ -162,15 +162,17 @@ function splitEvents() {
 
   const listed = EVENTS.map((ev) => ({ ...EVENT_DEFAULTS, ...ev }));
   const all = new Map(listed.map((ev) => [ev.date, ev]));
-  for (let i = 0; i <= PREVIEW_COUNT + 2; i++) {
+  // Enough months for the preview, plus the further dates in each calendar entry
+  for (let i = 0; i <= 2 * PREVIEW_COUNT + 2; i++) {
     const date = isoDate(secondTuesday(startOfToday.getFullYear(), startOfToday.getMonth() + i));
     if (!all.has(date)) all.set(date, { ...EVENT_DEFAULTS, date });
   }
 
   const events = [...all.values()].filter((ev) => !ev.cancelled);
+  const future = events.filter((ev) => toDate(ev.date) >= startOfToday).sort(byDate);
   return {
-    upcoming: events.filter((ev) => toDate(ev.date) >= startOfToday).sort(byDate)
-      .slice(0, 1 + PREVIEW_COUNT),
+    upcoming: future.slice(0, 1 + PREVIEW_COUNT),
+    future,
     past: events.filter((ev) => ev.meetup && toDate(ev.date) < startOfToday).sort(byDate).reverse(),
   };
 }
@@ -197,8 +199,13 @@ function mailtoUrl(subject, body) {
 
 const WEBSITE = "https://sinalaura.github.io/gogirls/";
 
-// Link that opens Google Calendar with the event already filled in
+// Link that opens Google Calendar with the event already filled in.
+// The description links the website and Meetup, and lists the next few dates.
 function googleCalendarUrl(ev) {
+  const t = TEXTS[lang];
+  const nextDates = splitEvents().future.filter((other) => other.date > ev.date).slice(0, PREVIEW_COUNT)
+    .map((other) => "• " + new Intl.DateTimeFormat(LOCALES[lang],
+      { weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(toDate(other.date)));
   const stamp = (time) => ev.date.replace(/-/g, "") + "T" + time.replace(":", "") + "00";
   const params = new URLSearchParams({
     action: "TEMPLATE",
@@ -206,7 +213,11 @@ function googleCalendarUrl(ev) {
     dates: `${stamp(ev.start)}/${stamp(ev.end)}`,
     ctz: "Europe/Berlin",
     location: `${ev.place}, ${ev.address}`,
-    details: [`Website: ${WEBSITE}`, ev.meetup && `Meetup: ${ev.meetup}`].filter(Boolean).join("\n"),
+    details: [
+      `Website: ${WEBSITE}`,
+      ev.meetup && `Meetup: ${ev.meetup}`,
+      nextDates.length > 0 && `\n${t.previewTitle}:\n${nextDates.join("\n")}`,
+    ].filter(Boolean).join("\n"),
   });
   return "https://calendar.google.com/calendar/render?" + params;
 }
