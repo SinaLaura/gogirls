@@ -1,0 +1,72 @@
+# Every morning, check that the next Sweet Home evening is posted on Meetup.
+# If none is posted, open an issue that tags you, so GitHub emails you once.
+# The issue links the last Sweet Home event, so you can copy it on Meetup.
+# When an event is posted again, the next run closes the issue by itself.
+# You can also start it by hand on GitHub: Actions -> Sweet Home reminder -> Run workflow
+name: Sweet Home reminder
+
+on:
+  schedule:
+    - cron: "15 6 * * *" # every day at 6:15 UTC (8:15 in Heidelberg in summer)
+  workflow_dispatch:
+
+permissions:
+  contents: write # to save the link of the latest event
+  issues: write # to open and close the reminder
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ISSUE_TITLE: Post the next Sweet Home event
+      LAST_EVENT_FILE: .github/sweet-home-last-event.txt
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Look for the next Sweet Home event on Meetup
+        id: check
+        run: |
+          # 0 = an event is posted, 3 = none is posted, anything else = the check itself broke
+          python3 .github/scripts/check_sweet_home.py && found=yes || code=$?
+          if [ "${found:-}" = yes ]; then echo "posted=yes" >> "$GITHUB_OUTPUT"
+          elif [ "$code" = 3 ]; then echo "posted=no" >> "$GITHUB_OUTPUT"
+          else exit "$code"; fi
+
+      - name: Save the link of the latest event
+        run: |
+          if git diff --quiet; then
+            echo "Nothing to save"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Save the link of the latest Sweet Home event"
+          git pull --rebase
+          git push
+
+      - name: Send a reminder or close the old one
+        run: |
+          open=$(gh issue list --state open --json number,title \
+            --jq '.[] | select(.title == env.ISSUE_TITLE) | .number')
+          if [ "${{ steps.check.outputs.posted }}" = no ]; then
+            if [ -n "$open" ]; then
+              echo "Reminder #$open is already open"
+              exit 0
+            fi
+            body="@${{ github.repository_owner }} there is no upcoming Sweet Home event on [Heidelberg Events](https://www.meetup.com/heidelberg-events/events/) right now. Time to post the next one!"
+            if [ -s "$LAST_EVENT_FILE" ]; then
+              body="$body
+
+          Last Sweet Home event, to copy: $(cat "$LAST_EVENT_FILE")"
+            fi
+            body="$body
+
+          This issue closes by itself once the event is on Meetup."
+            gh issue create --title "$ISSUE_TITLE" --body "$body"
+          else
+            for n in $open; do
+              gh issue close "$n" --comment "The next Sweet Home event is posted. Thanks!"
+            done
+          fi
