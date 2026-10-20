@@ -195,8 +195,15 @@ function mailtoUrl(subject, body) {
   return `mailto:${EMAIL}` + (query ? "?" + query : "");
 }
 
-// Link that opens Google Calendar with the event already filled in
+const WEBSITE = "https://sinalaura.github.io/gogirls/";
+
+// Link that opens Google Calendar with the event already filled in.
+// The description links the website and Meetup, and lists the later dates shown on the page.
 function googleCalendarUrl(ev) {
+  const t = TEXTS[lang];
+  const nextDates = splitEvents().upcoming.filter((other) => other.date > ev.date)
+    .map((other) => "• " + new Intl.DateTimeFormat(LOCALES[lang],
+      { weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(toDate(other.date)));
   const stamp = (time) => ev.date.replace(/-/g, "") + "T" + time.replace(":", "") + "00";
   const params = new URLSearchParams({
     action: "TEMPLATE",
@@ -204,7 +211,11 @@ function googleCalendarUrl(ev) {
     dates: `${stamp(ev.start)}/${stamp(ev.end)}`,
     ctz: "Europe/Berlin",
     location: `${ev.place}, ${ev.address}`,
-    details: ev.meetup || "",
+    details: [
+      `Website: ${WEBSITE}`,
+      ev.meetup && `Meetup: ${ev.meetup}`,
+      nextDates.length > 0 && `\n${t.previewTitle}:\n${nextDates.join("\n")}`,
+    ].filter(Boolean).join("\n"),
   });
   return "https://calendar.google.com/calendar/render?" + params;
 }
