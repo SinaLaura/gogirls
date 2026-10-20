@@ -12,7 +12,7 @@ Meetup links are added automatically: every morning a GitHub Action looks for ne
 
 ## Sweet Home reminder
 
-Every morning another GitHub Action checks whether an upcoming "Sweet Home" event is posted in the Heidelberg Events Meetup group. If none is, it opens an issue that tags you (so GitHub sends you one email) with a link to the last Sweet Home event to copy. The issue closes by itself once the next event is on Meetup. The latest event's link is kept in `.github/sweet-home-last-event.txt`.
+Every morning another GitHub Action checks whether an upcoming "Sweet Home" event is posted in the Heidelberg Events Meetup group. If none is, it opens an issue that tags you (so GitHub sends you one email) with a link to the last Sweet Home event to copy (taken from Meetup's past events). The issue closes by itself once the next event is on Meetup.
 
 ## Running it locally
 
