@@ -195,6 +195,8 @@ function mailtoUrl(subject, body) {
   return `mailto:${EMAIL}` + (query ? "?" + query : "");
 }
 
+const WEBSITE = "https://sinalaura.github.io/gogirls/";
+
 // Link that opens Google Calendar with the event already filled in
 function googleCalendarUrl(ev) {
   const stamp = (time) => ev.date.replace(/-/g, "") + "T" + time.replace(":", "") + "00";
@@ -204,7 +206,7 @@ function googleCalendarUrl(ev) {
     dates: `${stamp(ev.start)}/${stamp(ev.end)}`,
     ctz: "Europe/Berlin",
     location: `${ev.place}, ${ev.address}`,
-    details: ev.meetup || "",
+    details: [`Website: ${WEBSITE}`, ev.meetup && `Meetup: ${ev.meetup}`].filter(Boolean).join("\n"),
   });
   return "https://calendar.google.com/calendar/render?" + params;
 }
