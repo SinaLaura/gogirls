@@ -15,7 +15,7 @@ const TEXTS = {
     photoAlt: "Three women laughing on a sofa while playing Go on a wooden board",
     datesTitle: "Upcoming dates",
     noEvents: "The next date will be announced here soon. Check back!",
-    pastTitle: "Past events",
+    pastTitle: "Last event",
     previewTitle: "Further dates",
     pastLink: "On Meetup",
     nextUp: "Next up",
@@ -62,7 +62,7 @@ const TEXTS = {
     photoAlt: "Drei Frauen sitzen lachend auf einem Sofa und spielen Go auf einem Holzbrett",
     datesTitle: "Kommende Termine",
     noEvents: "Der nächste Termin wird bald hier bekannt gegeben. Schau wieder vorbei!",
-    pastTitle: "Vergangene Termine",
+    pastTitle: "Letztes Event",
     previewTitle: "Weitere Termine",
     pastLink: "Auf Meetup",
     nextUp: "Als Nächstes",
@@ -171,7 +171,8 @@ function splitEvents() {
   return {
     upcoming: events.filter((ev) => toDate(ev.date) >= startOfToday).sort(byDate)
       .slice(0, 1 + PREVIEW_COUNT),
-    past: events.filter((ev) => ev.meetup && toDate(ev.date) < startOfToday).sort(byDate).reverse(),
+    past: events.filter((ev) => ev.meetup && toDate(ev.date) < startOfToday).sort(byDate).reverse()
+      .slice(0, 1),
   };
 }
 
